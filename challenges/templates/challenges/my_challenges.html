@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}我的挑戰 - 粉絲挑戰打卡{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">🎯 我的挑戰</h1>
+  <p class="page-subtitle">追蹤你加入的挑戰與打卡進度</p>
+</div>
+
+{% if participations %}
+<div class="card-grid">
+  {% for p in participations %}
+  <div class="card challenge-card" id="my-challenge-{{ p.challenge.id }}">
+    <span class="challenge-type-badge {% if p.challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
+      {% if p.challenge.challenge_type == 'daily' %}📅 每日{% else %}📆 每週{% endif %}
+    </span>
+    {% if p.challenge.is_ended %}
+      <span class="challenge-type-badge" style="background: rgba(214,48,49,0.15); color: var(--color-danger); margin-left: 8px;">已結束</span>
+    {% endif %}
+    <h3 class="challenge-title">{{ p.challenge.title }}</h3>
+
+    <div class="stats-row" style="border-top: none; padding-top: 0; margin-top: var(--space-md); justify-content: flex-start; gap: var(--space-2xl);">
+      <div class="stat-item">
+        <div class="stat-value">{{ p.current_streak }}</div>
+        <div class="stat-label">連續天數</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">{{ p.total_points }}</div>
+        <div class="stat-label">累計總分</div>
+      </div>
+    </div>
+
+    <div class="challenge-meta" style="margin-top: var(--space-md);">
+      <span class="challenge-meta-item">🗓️ 加入於 {{ p.joined_at|date:"Y/m/d" }}</span>
+    </div>
+
+    <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+      <a href="{% url 'challenge-detail' p.challenge.pk %}" class="btn btn-primary">查看詳細</a>
+      <a href="{% url 'leaderboard' p.challenge.pk %}" class="btn btn-secondary">排行榜</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-state-icon">🎮</div>
+  <p class="empty-state-text">你還沒有加入任何挑戰</p>
+  <a href="{% url 'challenge-list' %}" class="btn btn-primary btn-lg">瀏覽挑戰列表</a>
+</div>
+{% endif %}
+{% endblock %}

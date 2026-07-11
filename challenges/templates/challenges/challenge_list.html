@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}挑戰列表 - 粉絲挑戰打卡{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">🔥 粉絲挑戰</h1>
+  <p class="page-subtitle">參加挑戰、每日打卡、登上排行榜！</p>
+</div>
+
+{% if ongoing_challenges %}
+<section>
+  <div class="section-header">
+    <span class="section-icon">⚡</span>
+    <h2 class="section-title">進行中的挑戰</h2>
+  </div>
+  <div class="card-grid">
+    {% for challenge in ongoing_challenges %}
+    <div class="card challenge-card" id="challenge-card-{{ challenge.id }}">
+      <span class="challenge-type-badge {% if challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
+        {% if challenge.challenge_type == 'daily' %}📅 每日{% else %}📆 每週{% endif %}
+      </span>
+      <h3 class="challenge-title">{{ challenge.title }}</h3>
+      <p class="challenge-desc">{{ challenge.description }}</p>
+      <div class="challenge-meta">
+        <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} ~ {{ challenge.end_at|date:"Y/m/d" }}</span>
+        <span class="challenge-meta-item">🏆 每次 {{ challenge.points_per_checkin }} 分</span>
+      </div>
+      <div>
+        {% if user.is_authenticated %}
+          {% if challenge.id in joined_challenge_ids %}
+            <a href="{% url 'challenge-detail' challenge.pk %}" class="btn btn-success">查看進度</a>
+          {% else %}
+            <button class="btn btn-primary" id="join-btn-{{ challenge.id }}" onclick="joinChallenge({{ challenge.id }}, this)">加入挑戰</button>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'login' %}?next={% url 'challenge-list' %}" class="btn btn-primary">登入後加入</a>
+        {% endif %}
+        <a href="{% url 'challenge-detail' challenge.pk %}" class="btn btn-secondary" style="margin-left: 8px;">詳細</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if upcoming_challenges %}
+<section style="margin-top: var(--space-2xl);">
+  <div class="section-header">
+    <span class="section-icon">🚀</span>
+    <h2 class="section-title">即將開始</h2>
+  </div>
+  <div class="card-grid">
+    {% for challenge in upcoming_challenges %}
+    <div class="card challenge-card" id="challenge-card-{{ challenge.id }}">
+      <span class="challenge-type-badge {% if challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
+        {% if challenge.challenge_type == 'daily' %}📅 每日{% else %}📆 每週{% endif %}
+      </span>
+      <h3 class="challenge-title">{{ challenge.title }}</h3>
+      <p class="challenge-desc">{{ challenge.description }}</p>
+      <div class="challenge-meta">
+        <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} 開始</span>
+        <span class="challenge-meta-item">🏆 每次 {{ challenge.points_per_checkin }} 分</span>
+      </div>
+      <button class="btn btn-secondary btn-disabled" disabled>即將開放</button>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if not ongoing_challenges and not upcoming_challenges %}
+<div class="empty-state">
+  <div class="empty-state-icon">🏖️</div>
+  <p class="empty-state-text">目前沒有可參加的挑戰，請稍後再來！</p>
+</div>
+{% endif %}
+{% endblock %}

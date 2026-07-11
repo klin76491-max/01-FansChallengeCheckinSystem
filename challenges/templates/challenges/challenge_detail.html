@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}{{ challenge.title }} - 粉絲挑戰打卡{% endblock %}
+
+{% block content %}
+<div class="detail-header">
+  <a href="{% url 'challenge-list' %}" class="btn btn-secondary" style="margin-bottom: var(--space-lg);">← 返回列表</a>
+  <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-sm);">
+    <span class="challenge-type-badge {% if challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
+      {% if challenge.challenge_type == 'daily' %}📅 每日挑戰{% else %}📆 每週挑戰{% endif %}
+    </span>
+    {% if challenge.is_ended %}
+      <span class="challenge-type-badge" style="background: rgba(214,48,49,0.15); color: var(--color-danger);">已結束</span>
+    {% endif %}
+  </div>
+  <h1 class="page-title">{{ challenge.title }}</h1>
+</div>
+
+<div class="detail-grid">
+  <!-- 左側：挑戰內容 -->
+  <div class="detail-main">
+    <!-- 挑戰描述 -->
+    <div class="card">
+      <div class="section-header">
+        <span class="section-icon">📋</span>
+        <h2 class="section-title">挑戰說明</h2>
+      </div>
+      <p style="color: var(--text-secondary); line-height: 1.8;">{{ challenge.description|linebreaksbr }}</p>
+      <div class="challenge-meta" style="margin-top: var(--space-lg);">
+        <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} ~ {{ challenge.end_at|date:"Y/m/d" }}</span>
+        <span class="challenge-meta-item">🏆 每次打卡 {{ challenge.points_per_checkin }} 分</span>
+        <span class="challenge-meta-item">🔥 連續紅利 +{{ challenge.bonus_for_streak }} 分</span>
+      </div>
+    </div>
+
+    <!-- 排行榜預覽 -->
+    <div class="card">
+      <div class="section-header">
+        <span class="section-icon">🏅</span>
+        <h2 class="section-title">排行榜 TOP 5</h2>
+      </div>
+      {% if top_participants %}
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>名次</th>
+            <th>暱稱</th>
+            <th>總分</th>
+            <th>連續天數</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in top_participants %}
+          <tr {% if user.is_authenticated and p.user.id == user.id %}class="rank-me"{% endif %}>
+            <td><span class="rank-number rank-{{ forloop.counter }}">{{ forloop.counter }}</span></td>
+            <td>{{ p.user.first_name|default:p.user.username }}</td>
+            <td><strong>{{ p.total_points }}</strong></td>
+            <td>{{ p.current_streak }} 天</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div style="text-align: center; margin-top: var(--space-lg);">
+        <a href="{% url 'leaderboard' challenge.pk %}" class="btn btn-secondary">查看完整排行榜</a>
+      </div>
+      {% else %}
+      <p style="color: var(--text-muted); text-align: center; padding: var(--space-xl);">還沒有人加入，快成為第一位！</p>
+      {% endif %}
+    </div>
+
+    <!-- 打卡紀錄 -->
+    {% if has_joined and checkin_history %}
+    <div class="card">
+      <div class="section-header">
+        <span class="section-icon">📝</span>
+        <h2 class="section-title">我的打卡紀錄</h2>
+      </div>
+      <ul class="checkin-history">
+        {% for ci in checkin_history %}
+        <li class="checkin-item">
+          <span class="checkin-date">{{ ci.check_in_date|date:"Y/m/d" }}</span>
+          <span class="checkin-score">+{{ ci.score_earned }} 分</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- 右側 Sidebar -->
+  <div class="detail-sidebar">
+    <!-- 進度卡 -->
+    {% if has_joined %}
+    <div class="card progress-card">
+      <div id="last-score" style="display:none; color: var(--color-success); font-weight:700; font-size: var(--font-size-lg); margin-bottom: var(--space-sm);"></div>
+      <div class="streak-display" id="streak-value">{{ participant.current_streak }}</div>
+      <div class="streak-label">連續打卡天數</div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value" id="total-points">{{ participant.total_points }}</div>
+          <div class="stat-label">累計總分</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ checkin_history|length }}</div>
+          <div class="stat-label">打卡次數</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- 操作區 -->
+    <div class="card" style="text-align: center;">
+      {% if user.is_authenticated %}
+        {% if not has_joined %}
+          {% if not challenge.is_ended %}
+          <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">加入挑戰，開始你的打卡旅程！</p>
+          <button class="btn btn-primary btn-lg btn-block" id="join-btn-detail" onclick="joinChallenge({{ challenge.id }}, this)">🚀 加入挑戰</button>
+          {% else %}
+          <p style="color: var(--text-muted);">此挑戰已結束</p>
+          {% endif %}
+        {% elif has_checked_in_today %}
+          <button class="btn btn-joined btn-lg btn-block checkin-btn" disabled>✓ 今日已打卡</button>
+        {% elif challenge.is_ongoing %}
+          <div class="checkin-section">
+            <button class="btn btn-success btn-lg btn-block checkin-btn" id="checkin-btn" onclick="checkIn({{ challenge.id }}, this)">🔥 立即打卡</button>
+          </div>
+        {% else %}
+          <p style="color: var(--text-muted);">此挑戰不在活動期間</p>
+        {% endif %}
+
+        {% if has_joined and challenge.share_enabled %}
+        <div class="share-section" style="margin-top: var(--space-lg);">
+          <button class="btn btn-secondary btn-block"
+            onclick="shareResult('{{ challenge.title }}', {{ participant.current_streak }}, {{ participant.total_points }}, window.location.href)">
+            📤 分享成績
+          </button>
+        </div>
+        {% endif %}
+      {% else %}
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">登入後即可加入挑戰與打卡</p>
+        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-lg btn-block">登入參加</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
