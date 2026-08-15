@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}排行榜 - {{ challenge.title }} - A Little Wonder 粉絲打卡挑戰{% endblock %}
+
+
+{% block content %}
+<div class="page-header">
+  <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-outline" style="margin-bottom: var(--space-lg);">← 返回挑戰詳情</a>
+  <h1 class="page-title">🏆 挑戰即時榮譽榜</h1>
+  <p class="page-subtitle">{{ challenge.title }} — 即時更新前 50 名優秀挑戰者</p>
+</div>
+
+{% if my_rank %}
+<div class="card my-rank-card">
+  <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-sm);">你目前的排名</p>
+  <div class="my-rank-number">第 {{ my_rank }} 名</div>
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-value">{{ my_participant.total_points }}</div>
+      <div class="stat-label">⭐ 總分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">{{ my_participant.current_streak }}</div>
+      <div class="stat-label">🔥 連續天數</div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if leaderboard %}
+<div class="card">
+  <table class="leaderboard-table" id="leaderboard-full">
+    <thead>
+      <tr>
+        <th>名次</th>
+        <th>暱稱</th>
+        <th>總分</th>
+        <th>連續天數</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in leaderboard %}
+      <tr {% if user.is_authenticated and entry.user_id == user.id %}class="rank-me"{% endif %}>
+        <td>
+          <span class="rank-number rank-{{ entry.rank }}">
+            {% if entry.rank == 1 %}🥇{% elif entry.rank == 2 %}🥈{% elif entry.rank == 3 %}🥉{% else %}{{ entry.rank }}{% endif %}
+          </span>
+        </td>
+        <td style="font-weight: 600;">{{ entry.username }}</td>
+        <td><strong>{{ entry.total_points }}</strong> 分</td>
+        <td>🔥 {{ entry.current_streak }} 天</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-state-icon">📊</div>
+  <p class="empty-state-text">排行榜尚無資料</p>
+</div>
+{% endif %}
+{% endblock %}

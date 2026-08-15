@@ -1,12 +1,21 @@
 """
-粉絲挑戰打卡系統 - 挑戰頁面路由
+粉絲挑戰打卡系統 - 挑戰相關路由與 API 端點
+根據 SD 文件 Section 3.2 路由配置
 """
 
 from django.urls import path
-from .views import ChallengeListView, ChallengeDetailView, LeaderboardView
+from . import views
+
+app_name = 'challenges'
 
 urlpatterns = [
-    path('', ChallengeListView.as_view(), name='challenge-list'),
-    path('<int:pk>/', ChallengeDetailView.as_view(), name='challenge-detail'),
-    path('<int:pk>/leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
+    # 頁面視圖
+    path('', views.ChallengeListView.as_view(), name='list'),
+    path('<int:pk>/', views.ChallengeDetailView.as_view(), name='detail'),
+    path('my-challenges/', views.MyChallengeListView.as_view(), name='my_challenges'),
+    path('<int:pk>/leaderboard/', views.LeaderboardView.as_view(), name='leaderboard'),
+
+    # AJAX API 端點
+    path('api/<int:challenge_id>/join/', views.JoinChallengeAPIView.as_view(), name='api_join'),
+    path('api/<int:challenge_id>/checkin/', views.CheckInAPIView.as_view(), name='api_checkin'),
 ]

@@ -1,14 +1,30 @@
 """
-粉絲挑戰打卡系統 - 頁面視圖 (Class-Based Views)
-根據 SD 文件 Section 3.1 定義
+粉絲挑戰打卡系統 - 頁面視圖 (CBV) 與 API 端點
+根據 SD 文件 Section 3.1 (頁面 CBV) 與 Section 5 (API 控制器) 定義
+
+頁面視圖：
+- ChallengeListView: 挑戰列表頁
+- ChallengeDetailView: 挑戰詳情與打卡主畫面
+- MyChallengeListView: 我的挑戰歷史
+- LeaderboardView: 排行榜頁
+
+API 端點：
+- JoinChallengeAPIView: 加入挑戰 API
+- CheckInAPIView: 打卡 API
 """
 
-import datetime
-from django.views.generic import ListView, DetailView, TemplateView
+from django.http import JsonResponse
+from django.views import View
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from .models import Challenge, Participant, CheckIn
+from .services import (
+    CheckInService, CheckInError, DuplicateCheckInError, ChallengeInactiveError
+)
 
+
+# ===== 頁面視圖 (Page CBV) =====
 
 class ChallengeListView(ListView):
     """挑戰列表頁 - 顯示所有可參加的挑戰"""
@@ -52,7 +68,7 @@ class ChallengeListView(ListView):
 
 
 class ChallengeDetailView(DetailView):
-    """挑戰詳細頁 - 顯示挑戰內容、使用者進度與打卡按鈕"""
+    """挑戰詳情頁 - 顯示挑戰內容、使用者進度與打卡按鈕"""
     model = Challenge
     template_name = 'challenges/challenge_detail.html'
     context_object_name = 'challenge'
@@ -65,6 +81,7 @@ class ChallengeDetailView(DetailView):
         context['has_joined'] = False
         context['has_checked_in_today'] = False
         context['participant'] = None
+        context['is_running'] = challenge.is_currently_running()
 
         if user.is_authenticated:
             try:
@@ -74,7 +91,7 @@ class ChallengeDetailView(DetailView):
                 context['has_joined'] = True
                 context['participant'] = participant
 
-                # 檢查今日是否已打卡
+                # 檢查今日是否已打卡 (以伺服器時區 Asia/Taipei 為準)
                 today = timezone.localdate()
                 context['has_checked_in_today'] = CheckIn.objects.filter(
                     user=user,
@@ -90,7 +107,7 @@ class ChallengeDetailView(DetailView):
                 user=user, challenge=challenge
             ).order_by('-check_in_date')[:10]
 
-        # 取得 Top 5 排行榜預覽
+        # 取得 Top 5 排行榜預覽 (使用 select_related 避免 N+1)
         context['top_participants'] = Participant.objects.filter(
             challenge=challenge
         ).select_related('user').order_by(
@@ -113,7 +130,7 @@ class MyChallengeListView(LoginRequiredMixin, ListView):
 
 
 class LeaderboardView(DetailView):
-    """排行榜頁 - 顯示挑戰的排名"""
+    """排行榜頁 - 依照 SD 排序：total_points DESC, current_streak DESC, joined_at ASC"""
     model = Challenge
     template_name = 'challenges/leaderboard.html'
     context_object_name = 'challenge'
@@ -122,11 +139,11 @@ class LeaderboardView(DetailView):
         context = super().get_context_data(**kwargs)
         challenge = self.object
 
-        # 依照 SD 排序邏輯：totalPoints DESC, consecutiveDays DESC
+        # 依照 SA Section 4.3 排序邏輯
         leaderboard = Participant.objects.filter(
             challenge=challenge
         ).select_related('user').order_by(
-            '-total_points', '-current_streak'
+            '-total_points', '-current_streak', 'joined_at'
         )[:50]
 
         # 加上排名序號
@@ -158,3 +175,42 @@ class LeaderboardView(DetailView):
                 pass
 
         return context
+
+
+# ===== API 端點 (AJAX Endpoints) =====
+
+class JoinChallengeAPIView(LoginRequiredMixin, View):
+    """加入挑戰 API - POST /challenges/api/<challenge_id>/join/"""
+
+    def post(self, request, challenge_id):
+        try:
+            participant, created = CheckInService.join_challenge(
+                request.user, challenge_id
+            )
+            msg = "成功加入挑戰！" if created else "您已經是本挑戰的參與者了。"
+            return JsonResponse({'success': True, 'message': msg})
+        except ChallengeInactiveError as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+        except CheckInError as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+        except Exception:
+            return JsonResponse(
+                {'success': False, 'error': "加入失敗，請稍後再試。"}, status=500
+            )
+
+
+class CheckInAPIView(LoginRequiredMixin, View):
+    """打卡 API - POST /challenges/api/<challenge_id>/checkin/"""
+
+    def post(self, request, challenge_id):
+        try:
+            result = CheckInService.perform_checkin(request.user, challenge_id)
+            return JsonResponse(result)
+        except DuplicateCheckInError as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+        except (ChallengeInactiveError, CheckInError) as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+        except Exception:
+            return JsonResponse(
+                {'success': False, 'error': "系統繁忙，請稍後再試。"}, status=500
+            )

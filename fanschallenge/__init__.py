@@ -1,1 +1,0 @@
-# fanschallenge project init

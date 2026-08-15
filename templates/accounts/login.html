@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}登入 / 註冊 - A Little Wonder 粉絲打卡挑戰{% endblock %}
+
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card" style="max-width: 460px; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: var(--space-md);">🔥</div>
+    <h1 class="auth-title" style="margin-bottom: var(--space-xs);">登入 / 快速註冊</h1>
+    <p class="auth-subtitle" style="margin-bottom: var(--space-xl);">全站統一採用 Google 帳號一鍵登入，快速安全免密碼！</p>
+
+    <!-- Google OAuth 唯一登入按鈕 -->
+    <div style="margin-bottom: var(--space-xl);">
+      <a href="{% url 'google_login' %}" class="btn btn-google btn-block btn-lg" id="google-login-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        使用 Google 帳號登入 / 註冊
+      </a>
+    </div>
+
+    <!-- 流程優勢說明 -->
+    <div style="text-align: left; background: rgba(45, 122, 138, 0.06); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); border-left: 3px solid var(--color-teal);">
+      <div style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-xs); font-size: 0.9rem;">
+        ✨ Google 一鍵登入特色
+      </div>
+      <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.6;">
+        <li>首次授權即<strong>自動完成新會員註冊</strong></li>
+        <li>無需額外填寫密碼，杜絕帳號密碼外洩</li>
+        <li>即時同步挑戰打卡進度與排行榜積分</li>
+      </ul>
+    </div>
+
+    <div class="auth-footer" style="margin-top: var(--space-md); font-size: 0.85rem;">
+      系統管理者後台登入：<a href="/admin/">Django Admin</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

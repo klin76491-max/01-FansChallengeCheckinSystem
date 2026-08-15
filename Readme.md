@@ -1,54 +1,145 @@
-# 粉絲挑戰打卡系統 (Fans Challenge Check-in System)
+# 🔥 FansChallengeCheckinSystem (粉絲挑戰打卡系統)
 
-這是一個基於 Django 5 建置的社群互動 MVP 系統，提供每日/每週挑戰、打卡紀錄、排行榜與成績分享功能。
+這是一個基於 Django 5.x 開發的現代化社群互動打卡應用程式（遵循 **A Little Wonder** 設計標準）。透過**每日/每週挑戰**、**AJAX 無刷新即時打卡**、**連續天數 (Streak) 紅利加分**、**即時排行榜**與**成就社群分享**，幫助學習者與粉絲養成持續練習與堅持的好習慣。
 
-## 🚀 系統需求
+---
 
-- Python 3.10+
-- Django 5.x
+## ✨ 核心功能特色
 
-## 🛠️ 本機開發與環境設定
+- **🔥 挑戰任務管理**：支援每日挑戰 (Daily) 與每週挑戰 (Weekly)，可精確設定活動起訖時間與自訂基礎/連擊給分規則。
+- **⚡ AJAX 無刷新即時打卡**：流暢的非同步互動體驗，提供動態數字跳動、微動畫回饋與即時分數結算，無需整頁重整。
+- **🎯 連擊機制與紅利加分 (Streak System)**：自動偵測跨日連續打卡狀態，連續天數累加並加贈連擊紅利，若斷更則自動重置為 1。
+- **🛡️ 嚴密防呆與交易安全**：以伺服器時區 (`Asia/Taipei`) 為基準防止跨區竄改時間，結合資料庫唯一約束與 `transaction.atomic` 確保高併發下數據絕對一致。
+- **🏆 即時榮譽排行榜 (Leaderboard)**：依總積分、連續天數與報名順序即時排序，前三名金銀銅標章視覺呈現，並醒目標註個人當前名次。
+- **📤 一鍵成就分享 (Web Share API)**：優先調用行動裝置原生 Web Share API 分享，並具備自動降級複製文案至剪貼簿機制，降低擴散門檻。
+- **🎨 A Little Wonder 品牌視覺設計**：採用深海藍 (`#1a3a52`)、青松藍綠 (`#2d7a8a`) 與燕麥暖白 (`#f5f0e8`) 現代色彩系統，提供全響應式行動優先 (Mobile-First) 體驗。
+- **🔐 Google OAuth 2.0 唯一快速註冊與登入**：全站統一支援 **Google 帳號一鍵授權登入 / 自動註冊**，無需手動填寫帳號密碼，安全快速且杜絕密碼外洩風險。
 
-本專案使用 `venv` 作為虛擬環境，並因為 Windows 執行原則限制，建議直接呼叫虛擬環境內的 `python.exe` 執行所有指令。
 
-### 1. 安裝相依套件
-如果您尚未安裝套件，請執行：
+
+---
+
+## 🚀 快速開始
+
+### 1. 建立與啟動虛擬環境 (Virtual Environment)
+
+本專案建議使用 `venv` 建立獨立虛擬環境。
+
 ```powershell
-.\venv\Scripts\python.exe -m pip install -r requirements.txt
+# 建立 Python 虛擬環境
+python -m venv .venv
 ```
 
-### 2. 資料庫遷移 (Migration)
-初次建置或有修改 Models 時，請執行以下指令更新資料庫 (SQLite)：
+[!TIP]
+**Windows PowerShell 執行原則提示**：  
+若執行 `Activate.ps1` 出現 `UnauthorizedAccess` / `running scripts is disabled` 錯誤，有以下兩種解決方式：
+1. **推薦方式（直接呼叫虛擬環境內的 Python，不需啟動）：**
+   ```powershell
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   .\.venv\Scripts\python.exe manage.py migrate
+   .\.venv\Scripts\python.exe manage.py runserver
+   ```
+2. **傳統方式（暫時放寬當前視窗的執行原則後啟動）：**
+   ```powershell
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\.venv\Scripts\Activate.ps1
+   # macOS/Linux 請使用: source .venv/bin/activate
+   ```
+
+---
+
+### 2. 安裝依賴套件
+
 ```powershell
-.\venv\Scripts\python.exe manage.py makemigrations
-.\venv\Scripts\python.exe manage.py migrate
+# 若已啟動虛擬環境：
+pip install -r requirements.txt
+
+# 若未啟動虛擬環境（直接調用）：
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-## 👨‍💻 管理者與後台設定
+### 3. 初始化資料庫
 
-為了能夠在後台建立挑戰任務，您需要先建立一組超級管理員 (Superuser) 帳號：abc/abc
-
-### 1. 建立管理者帳號
+執行以下指令建立資料庫與資料表：
 ```powershell
-.\venv\Scripts\python.exe manage.py createsuperuser
-```
-*(依序輸入帳號、信箱與密碼即可)*
+# 若已啟動虛擬環境：
+python manage.py makemigrations
+python manage.py migrate
 
-### 2. 啟動伺服器
-```powershell
-.\venv\Scripts\python.exe manage.py runserver 0.0.0.0:8000
+# 若未啟動虛擬環境：
+.\.venv\Scripts\python.exe manage.py makemigrations
+.\.venv\Scripts\python.exe manage.py migrate
 ```
 
-### 3. 登入後台並建立挑戰
-1. 伺服器啟動後，請開啟瀏覽器前往：[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
-2. 使用剛剛建立的管理員帳號登入。
-3. 在「**粉絲挑戰打卡系統**」區塊中找到「**挑戰列表**」，點擊「新增」。
-4. 填寫挑戰的名稱、規則、時間區間與給分方式後儲存。
+### 4. 建立管理者帳號 (Superuser)
 
-## 🌟 使用者前台介面
+建立後台管理員以新增與管理挑戰活動：
+```powershell
+# 若已啟動虛擬環境：
+python manage.py createsuperuser
 
-挑戰建立完成後，您可以前往前台首頁體驗：
-👉 [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+# 若未啟動虛擬環境：
+.\.venv\Scripts\python.exe manage.py createsuperuser
+```
+*(依序輸入使用者名稱、電子信箱與密碼)*
 
-- **一般使用者**：可點擊右上角註冊新帳號，加入您剛剛建立的挑戰並開始打卡！
-- **功能包含**：AJAX 無刷新打卡、連擊 (Streak) 積分計算、即時排行榜預覽、以及 Web Share API 成績分享。
+### 5. 執行自動化測試
+
+本專案包含 46 個完整單元與整合測試案例（涵蓋 Models、Service 業務邏輯、Page CBV、AJAX API 與 Google OAuth 認證）：
+```powershell
+# 若已啟動虛擬環境：
+python manage.py test challenges -v 2
+
+# 若未啟動虛擬環境：
+.\.venv\Scripts\python.exe manage.py test challenges -v 2
+```
+
+### 6. 設定 Google OAuth 2.0 (必要)
+
+本專案採用 Google OAuth 2.0 作為唯一會員登入管道，請於 `.env` 中填入憑證（由 [Google Cloud Console](https://console.cloud.google.com/) 取得，完全免費、免綁信用卡）：
+```env
+GOOGLE_OAUTH_CLIENT_ID=xxxxxxxxxxxx.apps.googleusercontent.com
+GOOGLE_OAUTH_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxx
+GOOGLE_REDIRECT_URI=http://127.0.0.1:8000/accounts/google/callback/
+```
+
+
+### 7. 啟動應用程式
+
+啟動本地端開發伺服器：
+```powershell
+# 若已啟動虛擬環境：
+python manage.py runserver
+
+# 若未啟動虛擬環境：
+.\.venv\Scripts\python.exe manage.py runserver
+```
+
+伺服器啟動後，即可開啟瀏覽器訪問：
+- 🌟 **前台挑戰首頁**：[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- ⚙️ **管理員後台**：[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+---
+
+## 📂 專案架構概覽
+
+- `config/` — Django 專案核心設定、環境變數載入與根路由 (`urls.py`)。
+- `challenges/` — 核心應用程式 (App)，遵循清晰的分層架構：
+  - **`models.py`**: 資料模型（挑戰活動 `Challenge`、參與名冊 `Participant`、打卡明細 `CheckIn`）。
+  - **`services.py`**: 核心業務邏輯層（`CheckInService` 打卡連擊計算、`GoogleAuthService` Google OAuth 認證同步）。
+  - **`views.py` & `urls.py`**: 頁面視圖 (CBV) 與 AJAX 非同步 API 端點。
+  - **`auth_views.py` & `auth_urls.py`**: 處理使用者註冊、密碼登入與 Google OAuth 登入/回傳處理。
+  - **`forms.py`**: 自訂表單驗證（含 Email 唯一性檢查之 `CustomUserCreationForm`）。
+  - **`admin.py`**: Django Admin 後台客製化介面。
+  - **`tests/`**: 分層自動化測試模組（`test_models.py`、`test_services.py`、`test_views.py` 共 46 測試）。
+- `templates/` — 前端 HTML 模板，採用語意化標籤與響應式排版（`base.html`、`challenges/`、`accounts/`）。
+- `static/` — 前端靜態資源：
+  - **`css/custom.css`**: A Little Wonder 品牌色彩系統與 Design Tokens。
+  - **`js/checkin.js`**: AJAX 打卡/加入挑戰與數字跳動微動畫。
+  - **`js/share.js`**: Web Share API 與剪貼簿降級分享處理。
+- `db.sqlite3` — 本地開發 SQLite 資料庫。
+
+---
+
+*Keep Chasing & Keep Checking In! 堅持打卡，見證每一步的微小奇蹟！* 🎉
+
