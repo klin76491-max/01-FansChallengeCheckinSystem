@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "建立打卡挑戰" %} - A Little Wonder {% trans "粉絲打卡挑戰" %}{% endblock %}
+
+{% block content %}
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: var(--space-md);">
+  <div>
+    <a href="{% url 'challenges:list' %}" class="btn btn-outline" style="margin-bottom: var(--space-md);">{% trans "← 返回挑戰列表" %}</a>
+    <h1 class="page-title">{% trans "✨ 建立專屬打卡挑戰" %}</h1>
+    <p class="page-subtitle">{% trans "設定你的打卡目標、天數與獎勵規則，邀請好友與社群夥伴一起堅持！" %}</p>
+  </div>
+</div>
+
+<div style="max-width: 680px; margin: 0 auto;">
+  <!-- 快捷天數預設選擇 -->
+  <div class="card" style="margin-bottom: var(--space-lg); background: #f8fafc; border: 1px dashed var(--border-color);">
+    <div style="font-size: var(--font-size-xs); font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-xs);">
+      ⚡ {% trans "快速設定推薦天數" %}
+    </div>
+    <div style="display: flex; gap: var(--space-xs); flex-wrap: wrap;">
+      <button type="button" class="btn btn-outline" style="font-size: var(--font-size-xs); padding: 0.35rem 0.75rem;" onclick="setPresetDuration(7)">
+        {% trans "7 天衝刺" %}
+      </button>
+      <button type="button" class="btn btn-primary" style="font-size: var(--font-size-xs); padding: 0.35rem 0.75rem;" onclick="setPresetDuration(14)">
+        🔥 {% trans "14 天習慣養成 (推薦)" %}
+      </button>
+      <button type="button" class="btn btn-outline" style="font-size: var(--font-size-xs); padding: 0.35rem 0.75rem;" onclick="setPresetDuration(21)">
+        {% trans "21 天蛻變" %}
+      </button>
+      <button type="button" class="btn btn-outline" style="font-size: var(--font-size-xs); padding: 0.35rem 0.75rem;" onclick="setPresetDuration(30)">
+        {% trans "30 天月度挑戰" %}
+      </button>
+    </div>
+  </div>
+
+  <div class="card" style="border-top: 3px solid var(--color-primary);">
+    <form method="post" id="create-challenge-form">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="alert alert-error" style="margin-bottom: var(--space-lg);">
+        {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- 挑戰標題 -->
+      <div class="form-group">
+        <label class="form-label" for="{{ form.title.id_for_label }}">
+          {% trans "挑戰標題" %} <span style="color: var(--color-danger);">*</span>
+        </label>
+        {{ form.title }}
+        {% if form.title.errors %}
+          <div class="form-error">{{ form.title.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- 挑戰說明 -->
+      <div class="form-group">
+        <label class="form-label" for="{{ form.description.id_for_label }}">
+          {% trans "挑戰說明與規則" %} <span style="color: var(--color-danger);">*</span>
+        </label>
+        {{ form.description }}
+        <div class="form-help">{% trans "可說明每天打卡需完成的任務（如：閱讀 15 分鐘、運動 30 分鐘等）。" %}</div>
+        {% if form.description.errors %}
+          <div class="form-error">{{ form.description.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+        <!-- 挑戰類型 -->
+        <div class="form-group">
+          <label class="form-label" for="{{ form.challenge_type.id_for_label }}">
+            {% trans "打卡頻率" %}
+          </label>
+          {{ form.challenge_type }}
+          {% if form.challenge_type.errors %}
+            <div class="form-error">{{ form.challenge_type.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- 啟用分享 -->
+        <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
+          <label class="form-label">{% trans "社交分享" %}</label>
+          <label style="display: flex; align-items: center; gap: var(--space-xs); font-size: var(--font-size-sm); cursor: pointer; color: var(--text-primary); margin-top: 0.25rem;">
+            {{ form.share_enabled }}
+            <span>{% trans "允許打卡後產生分享成就卡" %}</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+        <!-- 開始時間 -->
+        <div class="form-group">
+          <label class="form-label" for="{{ form.start_at.id_for_label }}">
+            {% trans "開始時間" %} <span style="color: var(--color-danger);">*</span>
+          </label>
+          {{ form.start_at }}
+          {% if form.start_at.errors %}
+            <div class="form-error">{{ form.start_at.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- 結束時間 -->
+        <div class="form-group">
+          <label class="form-label" for="{{ form.end_at.id_for_label }}">
+            {% trans "結束時間" %} <span style="color: var(--color-danger);">*</span>
+          </label>
+          {{ form.end_at }}
+          {% if form.end_at.errors %}
+            <div class="form-error">{{ form.end_at.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+        <!-- 每次打卡積分 -->
+        <div class="form-group">
+          <label class="form-label" for="{{ form.points_per_checkin.id_for_label }}">
+            {% trans "每次打卡基礎積分" %}
+          </label>
+          {{ form.points_per_checkin }}
+          <div class="form-help">{% trans "預設 10 分" %}</div>
+          {% if form.points_per_checkin.errors %}
+            <div class="form-error">{{ form.points_per_checkin.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <!-- 連續打卡加分 -->
+        <div class="form-group">
+          <label class="form-label" for="{{ form.bonus_for_streak.id_for_label }}">
+            {% trans "連續打卡加成獎勵" %}
+          </label>
+          {{ form.bonus_for_streak }}
+          <div class="form-help">{% trans "連續打卡每日額外加分 (預設 5 分)" %}</div>
+          {% if form.bonus_for_streak.errors %}
+            <div class="form-error">{{ form.bonus_for_streak.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card-actions" style="margin-top: var(--space-xl); justify-content: flex-end; gap: var(--space-md);">
+        <a href="{% url 'challenges:list' %}" class="btn btn-outline">{% trans "取消" %}</a>
+        <button type="submit" class="btn btn-primary btn-lg" id="submit-challenge-btn">
+          🚀 {% trans "發起打卡挑戰" %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function formatDateTimeLocal(d) {
+    const pad = (n) => String(n).padStart(2, '0');
+    const year = d.getFullYear();
+    const month = pad(d.getMonth() + 1);
+    const day = pad(d.getDate());
+    const hours = pad(d.getHours());
+    const minutes = pad(d.getMinutes());
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  function setPresetDuration(days) {
+    const startInput = document.getElementById('{{ form.start_at.id_for_label }}');
+    const endInput = document.getElementById('{{ form.end_at.id_for_label }}');
+
+    const now = new Date();
+    // 預設從當天 00:00 開始
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+    // 結束於 days 天後的 23:59
+    const end = new Date(start.getTime() + (days * 24 * 60 * 60 * 1000) - 1000);
+
+    if (startInput) startInput.value = formatDateTimeLocal(start);
+    if (endInput) endInput.value = formatDateTimeLocal(end);
+  }
+
+  // 預設載入時若無值，自動填入 14 天
+  document.addEventListener('DOMContentLoaded', () => {
+    const startInput = document.getElementById('{{ form.start_at.id_for_label }}');
+    const endInput = document.getElementById('{{ form.end_at.id_for_label }}');
+    if (startInput && !startInput.value) {
+      setPresetDuration(14);
+    }
+  });
+</script>
+{% endblock %}

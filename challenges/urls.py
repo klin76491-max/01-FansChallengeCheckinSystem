@@ -11,6 +11,7 @@ app_name = 'challenges'
 urlpatterns = [
     # 頁面視圖
     path('', views.ChallengeListView.as_view(), name='list'),
+    path('create/', views.ChallengeCreateView.as_view(), name='create'),
     path('<int:pk>/', views.ChallengeDetailView.as_view(), name='detail'),
     path('my-challenges/', views.MyChallengeListView.as_view(), name='my_challenges'),
     path('<int:pk>/leaderboard/', views.LeaderboardView.as_view(), name='leaderboard'),

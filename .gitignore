@@ -1,0 +1,84 @@
+# ==============================================================================
+# Git Ignore - Fans Challenge Check-in System (Django 5.x)
+# ==============================================================================
+
+# --- 環境變數與機密設定 (Environment & Secrets) ---
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# --- Python 運行與字節碼快取 (Python Bytecode & Caches) ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- 虛擬環境 (Virtual Environments) ---
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Django 數據庫與日誌 (Databases & Logs) ---
+*.sqlite3
+*.sqlite3-journal
+*.log
+local_settings.py
+db.sqlite3
+
+# --- Django 靜態與媒體收集目錄 (Collected Static & Media) ---
+staticfiles/
+media/
+uploads/
+
+# --- 測試與覆蓋率 (Testing & Coverage) ---
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# --- 編輯器與 IDE (IDE & Editor Configurations) ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# --- 作業系統產生的檔案 (OS Generated Files) ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini

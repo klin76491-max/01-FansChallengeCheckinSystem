@@ -15,10 +15,13 @@ API 端點：
 
 from django.http import JsonResponse
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.urls import reverse
 from django.utils import timezone
 from .models import Challenge, Participant, CheckIn
+from .forms import ChallengeCreateForm
 from .services import (
     CheckInService, CheckInError, DuplicateCheckInError, ChallengeInactiveError
 )
@@ -68,7 +71,7 @@ class ChallengeListView(ListView):
 
 
 class ChallengeDetailView(DetailView):
-    """挑戰詳情頁 - 顯示挑戰內容、使用者進度與打卡按鈕"""
+    """挑戰詳情頁 - 顯示挑戰內容、使用者進度、14 天打卡格子與打卡按鈕"""
     model = Challenge
     template_name = 'challenges/challenge_detail.html'
     context_object_name = 'challenge'
@@ -82,6 +85,17 @@ class ChallengeDetailView(DetailView):
         context['has_checked_in_today'] = False
         context['participant'] = None
         context['is_running'] = challenge.is_currently_running()
+        context['checkin_count'] = 0
+
+        # 14 天打卡格子預設狀態
+        grid_days = []
+        for d in range(1, 15):
+            grid_days.append({
+                'day': d,
+                'is_completed': False,
+                'is_current': False,
+                'is_locked': True,
+            })
 
         if user.is_authenticated:
             try:
@@ -93,11 +107,31 @@ class ChallengeDetailView(DetailView):
 
                 # 檢查今日是否已打卡 (以伺服器時區 Asia/Taipei 為準)
                 today = timezone.localdate()
-                context['has_checked_in_today'] = CheckIn.objects.filter(
+                has_checked_in_today = CheckIn.objects.filter(
                     user=user,
                     challenge=challenge,
                     check_in_date=today,
                 ).exists()
+                context['has_checked_in_today'] = has_checked_in_today
+
+                # 計算累積打卡次數
+                checkin_count = CheckIn.objects.filter(
+                    user=user, challenge=challenge
+                ).count()
+                context['checkin_count'] = checkin_count
+
+                # 計算 14 天格子的動態狀態
+                grid_days = []
+                for d in range(1, 15):
+                    is_completed = d <= checkin_count
+                    is_current = (d == checkin_count + 1) and not has_checked_in_today
+                    is_locked = not is_completed and not is_current
+                    grid_days.append({
+                        'day': d,
+                        'is_completed': is_completed,
+                        'is_current': is_current,
+                        'is_locked': is_locked,
+                    })
 
             except Participant.DoesNotExist:
                 pass
@@ -107,6 +141,10 @@ class ChallengeDetailView(DetailView):
                 user=user, challenge=challenge
             ).order_by('-check_in_date')[:10]
 
+        context['grid_days'] = grid_days
+        context['grid_total_days'] = 14
+        context['progress_percent'] = min(100, int((context['checkin_count'] / 14) * 100))
+
         # 取得 Top 5 排行榜預覽 (使用 select_related 避免 N+1)
         context['top_participants'] = Participant.objects.filter(
             challenge=challenge
@@ -115,6 +153,28 @@ class ChallengeDetailView(DetailView):
         )[:5]
 
         return context
+
+
+class ChallengeCreateView(LoginRequiredMixin, CreateView):
+    """建立自訂打卡項目頁面"""
+    model = Challenge
+    form_class = ChallengeCreateForm
+    template_name = 'challenges/challenge_create.html'
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        response = super().form_valid(form)
+        # 自動為建立者加入此挑戰
+        try:
+            CheckInService.join_challenge(self.request.user, self.object.id)
+        except Exception:
+            pass
+        messages.success(self.request, f"🎉 挑戰「{self.object.title}」建立成功！已自動為您加入該挑戰。")
+        return response
+
+    def get_success_url(self):
+        return reverse('challenges:detail', kwargs={'pk': self.object.pk})
+
 
 
 class MyChallengeListView(LoginRequiredMixin, ListView):

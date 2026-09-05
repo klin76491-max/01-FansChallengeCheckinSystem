@@ -32,6 +32,10 @@ class Challenge(models.Model):
     share_enabled = models.BooleanField('啟用分享', default=True)
     points_per_checkin = models.PositiveIntegerField('每次打卡基礎分數', default=10)
     bonus_for_streak = models.PositiveIntegerField('連續打卡額外加分', default=5)
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='created_challenges', verbose_name='建立者'
+    )
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     updated_at = models.DateTimeField('更新時間', auto_now=True)
 

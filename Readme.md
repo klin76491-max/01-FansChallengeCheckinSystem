@@ -119,10 +119,71 @@ python manage.py runserver
 - 🌟 **前台挑戰首頁**：[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 - ⚙️ **管理員後台**：[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
 
+### 8. 🐳 Docker 獨立微服務建置與部署 (獨立容器)
+
+本專案支援獨立 Docker 容器化部署（嚴禁依賴 `docker-compose`，具備獨立生命週期與資料持久化）：
+
+#### 8.1 建立與設定環境變數檔 (`.env`)
+啟動容器前請確保目錄下已建立 `.env` 檔案並配置 Google OAuth 憑證：
+```powershell
+Copy-Item .env.example .env
+```
+
+#### 8.2 建置獨立 Docker 映像檔
+```bash
+docker build -t fwm-fans-challenge:latest .
+```
+
+#### 8.3 啟動微服務容器 (含 Volume 資料持久化與 Port 映射)
+```bash
+# 映射主機 8001 Port，並掛載 .env 與 SQLite 資料庫 Volume
+docker run -d \
+  --name fwm-app-01 \
+  -p 8001:8000 \
+  --env-file .env \
+  -v fwm_challenge_data:/app \
+  --restart unless-stopped \
+  fwm-fans-challenge:latest
+```
+> [!NOTE]
+> 容器啟動時，`docker-entrypoint.sh` 會自動執行 `python manage.py migrate --noinput` 資料庫遷移。
+> 啟動後可開啟瀏覽器訪問：[http://localhost:8001/](http://localhost:8001/)
+
+#### 8.4 查看即時日誌
+```bash
+docker logs -f fwm-app-01
+```
+
+#### 8.5 建立管理員帳號 (在容器內執行)
+```bash
+docker exec -it fwm-app-01 python manage.py createsuperuser
+```
+
+#### 8.6 執行容器內自動化測試
+```bash
+docker exec -it fwm-app-01 python manage.py test challenges -v 2
+```
+
+#### 8.7 停止、重啟與移除容器
+```bash
+# 停止容器
+docker stop fwm-app-01
+
+# 重新啟動容器
+docker start fwm-app-01
+
+# 刪除容器 (Volume 資料仍會妥善保留於 fwm_challenge_data)
+docker rm -f fwm-app-01
+```
+
+
 ---
 
 ## 📂 專案架構概覽
 
+- `Dockerfile` — 獨立微服務 Docker 映像檔建置規格。
+- `docker-entrypoint.sh` — 容器啟動進入點腳本（自動執行資料庫遷移）。
+- `.dockerignore` — Docker 建置排除清單。
 - `config/` — Django 專案核心設定、環境變數載入與根路由 (`urls.py`)。
 - `challenges/` — 核心應用程式 (App)，遵循清晰的分層架構：
   - **`models.py`**: 資料模型（挑戰活動 `Challenge`、參與名冊 `Participant`、打卡明細 `CheckIn`）。
@@ -142,4 +203,5 @@ python manage.py runserver
 ---
 
 *Keep Chasing & Keep Checking In! 堅持打卡，見證每一步的微小奇蹟！* 🎉
+
 

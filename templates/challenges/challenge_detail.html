@@ -1,19 +1,19 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}{{ challenge.title }} - A Little Wonder 粉絲打卡挑戰{% endblock %}
-
+{% block title %}{{ challenge.title }} - A Little Wonder {% trans "粉絲打卡挑戰" %}{% endblock %}
 
 {% block content %}
 <div class="detail-header">
-  <a href="{% url 'challenges:list' %}" class="btn btn-outline" style="margin-bottom: var(--space-lg);">← 返回挑戰列表</a>
+  <a href="{% url 'challenges:list' %}" class="btn btn-outline" style="margin-bottom: var(--space-lg);">{% trans "← 返回挑戰列表" %}</a>
   <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-sm); flex-wrap: wrap;">
     <span class="challenge-type-badge {% if challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
-      {% if challenge.challenge_type == 'daily' %}📅 每日挑戰{% else %}📆 每週挑戰{% endif %}
+      {% if challenge.challenge_type == 'daily' %}{% trans "📅 每日挑戰" %}{% else %}{% trans "📆 每週挑戰" %}{% endif %}
     </span>
     {% if challenge.is_ended %}
-      <span class="challenge-status-badge badge-ended">已結束</span>
+      <span class="challenge-status-badge badge-ended">{% trans "已結束" %}</span>
     {% elif is_running %}
-      <span class="challenge-status-badge badge-ongoing">進行中</span>
+      <span class="challenge-status-badge badge-ongoing">{% trans "進行中" %}</span>
     {% endif %}
   </div>
   <h1 class="page-title">{{ challenge.title }}</h1>
@@ -26,13 +26,61 @@
     <div class="card">
       <div class="section-header">
         <span class="section-icon">📋</span>
-        <h2 class="section-title">挑戰說明</h2>
+        <h2 class="section-title">{% trans "挑戰說明" %}</h2>
       </div>
       <p style="color: var(--text-secondary); line-height: 1.8;">{{ challenge.description|linebreaksbr }}</p>
       <div class="challenge-meta" style="margin-top: var(--space-lg);">
         <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} ~ {{ challenge.end_at|date:"Y/m/d" }}</span>
-        <span class="challenge-meta-item">🏆 每次打卡 {{ challenge.points_per_checkin }} 分</span>
-        <span class="challenge-meta-item">🔥 連續紅利 +{{ challenge.bonus_for_streak }} 分</span>
+        <span class="challenge-meta-item">🏆 {% trans "每次打卡" %} {{ challenge.points_per_checkin }} {% trans "分" %}</span>
+        <span class="challenge-meta-item">🔥 {% trans "連續紅利 +" %}{{ challenge.bonus_for_streak }} {% trans "分" %}</span>
+      </div>
+    </div>
+
+    <!-- 14 天打卡進度里程碑格子 (14-Day Challenge Tracker) -->
+    <div class="card" id="challenge-grid-container">
+      <div class="section-header" style="justify-content: space-between; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: var(--space-xs);">
+          <span class="section-icon">🎯</span>
+          <h2 class="section-title">{% trans "14 天打卡進度里程碑" %}</h2>
+        </div>
+        <div class="grid-progress-badge">
+          <span id="grid-progress-count" style="font-weight: 700; color: var(--color-accent);">{{ checkin_count }}</span> / 14 {% trans "天" %}
+          <span class="grid-progress-rate" id="grid-progress-rate">({{ progress_percent }}%)</span>
+        </div>
+      </div>
+
+      <!-- 總體打卡進度條 -->
+      <div class="progress-bar-wrapper" style="margin-bottom: var(--space-lg);">
+        <div class="progress-bar-fill" id="grid-progress-fill" style="width: {{ progress_percent }}%;"></div>
+      </div>
+
+      <!-- 14 個打卡格子 (7x2 網格) -->
+      <div class="challenge-14day-grid" id="challenge-14day-grid">
+        {% for item in grid_days %}
+        <div class="grid-day-box {% if item.is_completed %}is-completed{% elif item.is_current %}is-current{% else %}is-locked{% endif %}"
+             id="grid-day-{{ item.day }}"
+             data-day="{{ item.day }}">
+          <div class="grid-day-num">DAY {{ item.day|stringformat:"02d" }}</div>
+          <div class="grid-day-icon">
+            {% if item.is_completed %}
+              <span class="icon-check">✓</span>
+            {% elif item.is_current %}
+              <span class="icon-target">⚡</span>
+            {% else %}
+              <span class="icon-lock">🔒</span>
+            {% endif %}
+          </div>
+          <div class="grid-day-status">
+            {% if item.is_completed %}
+              {% trans "已點亮" %}
+            {% elif item.is_current %}
+              {% trans "今日目標" %}
+            {% else %}
+              {% trans "未解鎖" %}
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>
 
@@ -40,16 +88,16 @@
     <div class="card">
       <div class="section-header">
         <span class="section-icon">🏅</span>
-        <h2 class="section-title">排行榜 TOP 5</h2>
+        <h2 class="section-title">{% trans "排行榜 TOP 5" %}</h2>
       </div>
       {% if top_participants %}
       <table class="leaderboard-table" id="leaderboard-preview">
         <thead>
           <tr>
-            <th>名次</th>
-            <th>暱稱</th>
-            <th>總分</th>
-            <th>連續天數</th>
+            <th>{% trans "名次" %}</th>
+            <th>{% trans "暱稱" %}</th>
+            <th>{% trans "總分" %}</th>
+            <th>{% trans "連續天數" %}</th>
           </tr>
         </thead>
         <tbody>
@@ -62,16 +110,16 @@
             </td>
             <td>{{ p.user.first_name|default:p.user.username }}</td>
             <td><strong>{{ p.total_points }}</strong></td>
-            <td>{{ p.current_streak }} 天</td>
+            <td>{{ p.current_streak }} {% trans "天" %}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
       <div style="text-align: center; margin-top: var(--space-lg);">
-        <a href="{% url 'challenges:leaderboard' challenge.pk %}" class="btn btn-outline" id="view-leaderboard">🏆 查看完整排行榜</a>
+        <a href="{% url 'challenges:leaderboard' challenge.pk %}" class="btn btn-outline" id="view-leaderboard">{% trans "🏆 查看完整排行榜" %}</a>
       </div>
       {% else %}
-      <p style="color: var(--text-muted); text-align: center; padding: var(--space-xl);">還沒有人加入，快成為第一位！</p>
+      <p style="color: var(--text-muted); text-align: center; padding: var(--space-xl);">{% trans "還沒有人加入，快成為第一位！" %}</p>
       {% endif %}
     </div>
 
@@ -80,13 +128,13 @@
     <div class="card">
       <div class="section-header">
         <span class="section-icon">📝</span>
-        <h2 class="section-title">我的打卡紀錄</h2>
+        <h2 class="section-title">{% trans "我的打卡紀錄" %}</h2>
       </div>
       <ul class="checkin-history">
         {% for ci in checkin_history %}
         <li class="checkin-item">
           <span class="checkin-date">{{ ci.check_in_date|date:"Y/m/d" }}</span>
-          <span class="checkin-score">+{{ ci.score_earned }} 分</span>
+          <span class="checkin-score">+{{ ci.score_earned }} {% trans "分" %}</span>
         </li>
         {% endfor %}
       </ul>
@@ -99,18 +147,18 @@
     <!-- 進度卡 (我的個人打卡儀表板) -->
     {% if has_joined %}
     <div class="card progress-card">
-      <div class="progress-card-header">🎯 我的個人打卡儀表板</div>
+      <div class="progress-card-header">{% trans "🎯 我的個人打卡儀表板" %}</div>
       <div id="last-score" class="last-score-display" style="display:none;"></div>
       <div class="streak-display" id="streak-value">{{ participant.current_streak }}</div>
-      <div class="streak-label">🔥 連續打卡天數</div>
+      <div class="streak-label">{% trans "🔥 連續打卡天數" %}</div>
       <div class="stats-row">
         <div class="stat-item">
           <div class="stat-value" id="total-points">{{ participant.total_points }}</div>
-          <div class="stat-label">⭐ 累計總積分</div>
+          <div class="stat-label">{% trans "⭐ 累計總積分" %}</div>
         </div>
         <div class="stat-item">
           <div class="stat-value">{{ checkin_history|length }}</div>
-          <div class="stat-label">📊 打卡次數</div>
+          <div class="stat-label">{% trans "📊 打卡次數" %}</div>
         </div>
       </div>
     </div>
@@ -121,17 +169,17 @@
       {% if user.is_authenticated %}
         {% if not has_joined %}
           {% if not challenge.is_ended %}
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); text-align: center;">加入挑戰，開始你的打卡旅程！</p>
-          <button class="btn btn-primary btn-lg btn-block" id="join-btn-detail" data-challenge-id="{{ challenge.id }}">🚀 立即加入</button>
+          <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); text-align: center;">{% trans "加入挑戰，開始你的打卡旅程！" %}</p>
+          <button class="btn btn-primary btn-lg btn-block" id="join-btn-detail" data-challenge-id="{{ challenge.id }}">{% trans "🚀 立即加入" %}</button>
           {% else %}
-          <p style="color: var(--text-muted); text-align: center;">此挑戰已結束</p>
+          <p style="color: var(--text-muted); text-align: center;">{% trans "此挑戰已結束" %}</p>
           {% endif %}
         {% elif has_checked_in_today %}
-          <button class="btn btn-checked btn-lg btn-block checkin-btn" disabled id="checkin-btn">🎉 今日已打卡完成！</button>
+          <button class="btn btn-checked btn-lg btn-block checkin-btn" disabled id="checkin-btn">{% trans "🎉 今日已打卡完成！" %}</button>
         {% elif is_running %}
-          <button class="btn btn-checkin btn-lg btn-block checkin-btn" id="checkin-btn" data-challenge-id="{{ challenge.id }}">⚡ 立即打卡</button>
+          <button class="btn btn-checkin btn-lg btn-block checkin-btn" id="checkin-btn" data-challenge-id="{{ challenge.id }}">{% trans "⚡ 立即打卡" %}</button>
         {% else %}
-          <p style="color: var(--text-muted); text-align: center;">此挑戰不在活動期間</p>
+          <p style="color: var(--text-muted); text-align: center;">{% trans "此挑戰不在活動期間" %}</p>
         {% endif %}
 
         {% if has_joined and challenge.share_enabled %}
@@ -140,13 +188,13 @@
             data-challenge-title="{{ challenge.title }}"
             data-streak="{{ participant.current_streak }}"
             data-points="{{ participant.total_points }}">
-            📤 分享我的成就
+            {% trans "📤 分享我的成就" %}
           </button>
         </div>
         {% endif %}
       {% else %}
-        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); text-align: center;">登入後即可加入挑戰與打卡</p>
-        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-lg btn-block" id="login-to-join">登入參加</a>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); text-align: center;">{% trans "登入後即可加入挑戰與打卡" %}</p>
+        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary btn-lg btn-block" id="login-to-join">{% trans "登入參加" %}</a>
       {% endif %}
     </div>
   </div>

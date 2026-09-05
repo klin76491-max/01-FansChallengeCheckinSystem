@@ -1,27 +1,27 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}排行榜 - {{ challenge.title }} - A Little Wonder 粉絲打卡挑戰{% endblock %}
-
+{% block title %}{% trans "排行榜" %} - {{ challenge.title }} - A Little Wonder {% trans "粉絲打卡挑戰" %}{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-outline" style="margin-bottom: var(--space-lg);">← 返回挑戰詳情</a>
-  <h1 class="page-title">🏆 挑戰即時榮譽榜</h1>
-  <p class="page-subtitle">{{ challenge.title }} — 即時更新前 50 名優秀挑戰者</p>
+  <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-outline" style="margin-bottom: var(--space-lg);">{% trans "← 返回挑戰詳情" %}</a>
+  <h1 class="page-title">{% trans "🏆 挑戰即時榮譽榜" %}</h1>
+  <p class="page-subtitle">{{ challenge.title }} — {% trans "即時更新前 50 名優秀挑戰者" %}</p>
 </div>
 
 {% if my_rank %}
 <div class="card my-rank-card">
-  <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-sm);">你目前的排名</p>
-  <div class="my-rank-number">第 {{ my_rank }} 名</div>
+  <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-sm);">{% trans "你目前的排名" %}</p>
+  <div class="my-rank-number">{% trans "第" %} {{ my_rank }} {% trans "名" %}</div>
   <div class="stats-row">
     <div class="stat-item">
       <div class="stat-value">{{ my_participant.total_points }}</div>
-      <div class="stat-label">⭐ 總分</div>
+      <div class="stat-label">{% trans "⭐ 總分" %}</div>
     </div>
     <div class="stat-item">
       <div class="stat-value">{{ my_participant.current_streak }}</div>
-      <div class="stat-label">🔥 連續天數</div>
+      <div class="stat-label">{% trans "🔥 連續天數" %}</div>
     </div>
   </div>
 </div>
@@ -32,10 +32,10 @@
   <table class="leaderboard-table" id="leaderboard-full">
     <thead>
       <tr>
-        <th>名次</th>
-        <th>暱稱</th>
-        <th>總分</th>
-        <th>連續天數</th>
+        <th>{% trans "名次" %}</th>
+        <th>{% trans "暱稱" %}</th>
+        <th>{% trans "總分" %}</th>
+        <th>{% trans "連續天數" %}</th>
       </tr>
     </thead>
     <tbody>
@@ -47,8 +47,8 @@
           </span>
         </td>
         <td style="font-weight: 600;">{{ entry.username }}</td>
-        <td><strong>{{ entry.total_points }}</strong> 分</td>
-        <td>🔥 {{ entry.current_streak }} 天</td>
+        <td><strong>{{ entry.total_points }}</strong> {% trans "分" %}</td>
+        <td>🔥 {{ entry.current_streak }} {% trans "天" %}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -57,7 +57,7 @@
 {% else %}
 <div class="empty-state">
   <div class="empty-state-icon">📊</div>
-  <p class="empty-state-text">排行榜尚無資料</p>
+  <p class="empty-state-text">{% trans "排行榜尚無資料" %}</p>
 </div>
 {% endif %}
 {% endblock %}

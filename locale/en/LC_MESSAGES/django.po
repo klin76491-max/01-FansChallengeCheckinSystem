@@ -1,0 +1,290 @@
+# English translations for Fans Challenge Checkin System.
+msgid ""
+msgstr ""
+"Project-Id-Version: Fans Challenge Check-in System 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-29 17:50+0800\n"
+"PO-Revision-Date: 2026-08-29 17:50+0800\n"
+"Last-Translator: Antigravity\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "粉絲挑戰打卡"
+msgstr "Fans Challenge Check-in"
+
+msgid "粉絲挑戰打卡系統 - 透過每日挑戰與排行榜，提升社群互動與參與度"
+msgstr "Fans Challenge Check-in System - Boost community engagement with daily challenges and leaderboards."
+
+msgid "挑戰列表"
+msgstr "Challenges"
+
+msgid "我的挑戰"
+msgstr "My Challenges"
+
+msgid "登入"
+msgstr "Log in"
+
+msgid "註冊"
+msgstr "Sign up"
+
+msgid "登出"
+msgstr "Log out"
+
+msgid "語言"
+msgstr "Language"
+
+msgid "繁體中文"
+msgstr "繁體中文"
+
+msgid "English"
+msgstr "English"
+
+msgid "© 2026 A Little Wonder 粉絲打卡挑戰. All rights reserved."
+msgstr "© 2026 A Little Wonder Fans Check-in Challenge. All rights reserved."
+
+msgid "🔥 探索正在進行中的熱門挑戰"
+msgstr "🔥 Explore Popular Ongoing Challenges"
+
+msgid "堅持每天打卡，養成好習慣！"
+msgstr "Check in every day to build lasting habits!"
+
+msgid "進行中的挑戰"
+msgstr "Ongoing Challenges"
+
+msgid "即將開始"
+msgstr "Upcoming"
+
+msgid "📅 每日打卡"
+msgstr "📅 Daily Check-in"
+
+msgid "📆 每週挑戰"
+msgstr "📆 Weekly Challenge"
+
+msgid "📅 每日"
+msgstr "📅 Daily"
+
+msgid "📆 每週"
+msgstr "📆 Weekly"
+
+msgid "📅 每日挑戰"
+msgstr "📅 Daily Challenge"
+
+msgid "進行中"
+msgstr "Ongoing"
+
+msgid "已結束"
+msgstr "Ended"
+
+msgid "即將開放"
+msgstr "Coming Soon"
+
+msgid "基本分：+"
+msgstr "Base: +"
+
+msgid "分/天"
+msgstr "pts/day"
+
+msgid "連擊加分：+"
+msgstr "Streak Bonus: +"
+
+msgid "查看進度 ✓"
+msgstr "View Progress ✓"
+
+msgid "🚀 立即加入"
+msgstr "🚀 Join Now"
+
+msgid "查看詳情 ➔"
+msgstr "View Details ➔"
+
+msgid "登入後加入"
+msgstr "Log in to Join"
+
+msgid "開始"
+msgstr "Starts"
+
+msgid "每次"
+msgstr "Each"
+
+msgid "分"
+msgstr "pts"
+
+msgid "目前沒有可參加的挑戰，請稍後再來！"
+msgstr "No challenges available right now. Please check back later!"
+
+msgid "← 返回挑戰列表"
+msgstr "← Back to Challenges"
+
+msgid "挑戰說明"
+msgstr "Challenge Details"
+
+msgid "每次打卡"
+msgstr "Per check-in"
+
+msgid "連續紅利 +"
+msgstr "Streak bonus +"
+
+msgid "排行榜 TOP 5"
+msgstr "Leaderboard TOP 5"
+
+msgid "名次"
+msgstr "Rank"
+
+msgid "暱稱"
+msgstr "Name"
+
+msgid "總分"
+msgstr "Total Points"
+
+msgid "連續天數"
+msgstr "Streak"
+
+msgid "天"
+msgstr "Days"
+
+msgid "🏆 查看完整排行榜"
+msgstr "🏆 View Full Leaderboard"
+
+msgid "還沒有人加入，快成為第一位！"
+msgstr "No participants yet. Be the first to join!"
+
+msgid "我的打卡紀錄"
+msgstr "My Check-in History"
+
+msgid "🎯 我的個人打卡儀表板"
+msgstr "🎯 My Check-in Dashboard"
+
+msgid "🔥 連續打卡天數"
+msgstr "🔥 Current Streak"
+
+msgid "⭐ 累計總積分"
+msgstr "⭐ Total Points"
+
+msgid "📊 打卡次數"
+msgstr "📊 Check-ins"
+
+msgid "加入挑戰，開始你的打卡旅程！"
+msgstr "Join the challenge to start your check-in journey!"
+
+msgid "🎉 今日已打卡完成！"
+msgstr "🎉 Checked in for today!"
+
+msgid "⚡ 立即打卡"
+msgstr "⚡ Check in Now"
+
+msgid "此挑戰已結束"
+msgstr "This challenge has ended"
+
+msgid "此挑戰不在活動期間"
+msgstr "This challenge is currently not active"
+
+msgid "📤 分享我的成就"
+msgstr "📤 Share My Achievement"
+
+msgid "登入後即可加入挑戰與打卡"
+msgstr "Log in to join the challenge and check in"
+
+msgid "登入參加"
+msgstr "Log in to Join"
+
+msgid "← 返回挑戰詳情"
+msgstr "← Back to Challenge Details"
+
+msgid "🏆 挑戰即時榮譽榜"
+msgstr "🏆 Live Honor Roll"
+
+msgid "即時更新前 50 名優秀挑戰者"
+msgstr "Live updates for the Top 50 challengers"
+
+msgid "你目前的排名"
+msgstr "Your Current Rank"
+
+msgid "第"
+msgstr "Rank #"
+
+msgid "名"
+msgstr ""
+
+msgid "⭐ 總分"
+msgstr "⭐ Total Points"
+
+msgid "🔥 連續天數"
+msgstr "🔥 Streak Days"
+
+msgid "排行榜尚無資料"
+msgstr "No leaderboard data yet"
+
+msgid "🎯 我的挑戰"
+msgstr "🎯 My Challenges"
+
+msgid "追蹤你加入的挑戰與打卡進度"
+msgstr "Track your joined challenges and check-in progress"
+
+msgid "加入於"
+msgstr "Joined on"
+
+msgid "查看詳細"
+msgstr "View Details"
+
+msgid "🏆 排行榜"
+msgstr "🏆 Leaderboard"
+
+msgid "你還沒有加入任何挑戰"
+msgstr "You haven't joined any challenges yet"
+
+msgid "瀏覽挑戰列表"
+msgstr "Browse Challenges"
+
+msgid "登入 / 註冊 - A Little Wonder 粉絲打卡挑戰"
+msgstr "Log in / Sign up - A Little Wonder Fans Check-in Challenge"
+
+msgid "快速註冊 - A Little Wonder 粉絲打卡挑戰"
+msgstr "Quick Sign Up - A Little Wonder Fans Check-in Challenge"
+
+msgid "登入 / 快速註冊"
+msgstr "Log in / Quick Sign up"
+
+msgid "加入打卡挑戰"
+msgstr "Join Check-in Challenge"
+
+msgid "全站統一採用 Google 帳號一鍵登入，快速安全免密碼！"
+msgstr "Sign in seamlessly with Google. Fast, secure, and passwordless!"
+
+msgid "使用 Google 帳號一鍵授權，立即建立你的專屬挑戰帳號！"
+msgstr "Authorize with Google to create your challenge account instantly!"
+
+msgid "使用 Google 帳號登入 / 註冊"
+msgstr "Sign in / Sign up with Google"
+
+msgid "使用 Google 帳號快速註冊 / 登入"
+msgstr "Sign up / Sign in with Google"
+
+msgid "✨ Google 一鍵登入特色"
+msgstr "✨ Google One-Click Features"
+
+msgid "首次授權即<strong>自動完成新會員註冊</strong>"
+msgstr "First-time sign in <strong>automatically creates your account</strong>"
+
+msgid "無需額外填寫密碼，杜絕帳號密碼外洩"
+msgstr "No passwords required, eliminating password leak risks"
+
+msgid "即時同步挑戰打卡進度與排行榜積分"
+msgstr "Instantly sync challenge progress and leaderboard score"
+
+msgid "🔒 免填表單・即刻出發"
+msgstr "🔒 Zero Forms・Instant Start"
+
+msgid "點擊上方 Google 登入按鈕授權後，系統將自動為您完成帳號配置並直接進入挑戰首頁，省去填寫帳號密碼的繁瑣步驟。"
+msgstr "Click the Google sign-in button above to authorize. Your account is automatically configured, bypassing complicated forms."
+
+msgid "已經擁有帳號？"
+msgstr "Already have an account?"
+
+msgid "前往登入頁面"
+msgstr "Go to Login"
+
+msgid "系統管理者後台登入："
+msgstr "System Admin Login:"

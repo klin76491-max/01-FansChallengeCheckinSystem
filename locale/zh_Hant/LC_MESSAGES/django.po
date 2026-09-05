@@ -1,0 +1,290 @@
+# Traditional Chinese translations for Fans Challenge Checkin System.
+msgid ""
+msgstr ""
+"Project-Id-Version: Fans Challenge Check-in System 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-29 17:50+0800\n"
+"PO-Revision-Date: 2026-08-29 17:50+0800\n"
+"Last-Translator: Antigravity\n"
+"Language-Team: Traditional Chinese\n"
+"Language: zh_Hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "粉絲挑戰打卡"
+msgstr "粉絲挑戰打卡"
+
+msgid "粉絲挑戰打卡系統 - 透過每日挑戰與排行榜，提升社群互動與參與度"
+msgstr "粉絲挑戰打卡系統 - 透過每日挑戰與排行榜，提升社群互動與參與度"
+
+msgid "挑戰列表"
+msgstr "挑戰列表"
+
+msgid "我的挑戰"
+msgstr "我的挑戰"
+
+msgid "登入"
+msgstr "登入"
+
+msgid "註冊"
+msgstr "註冊"
+
+msgid "登出"
+msgstr "登出"
+
+msgid "語言"
+msgstr "語言"
+
+msgid "繁體中文"
+msgstr "繁體中文"
+
+msgid "English"
+msgstr "English"
+
+msgid "© 2026 A Little Wonder 粉絲打卡挑戰. All rights reserved."
+msgstr "© 2026 A Little Wonder 粉絲打卡挑戰. All rights reserved."
+
+msgid "🔥 探索正在進行中的熱門挑戰"
+msgstr "🔥 探索正在進行中的熱門挑戰"
+
+msgid "堅持每天打卡，養成好習慣！"
+msgstr "堅持每天打卡，養成好習慣！"
+
+msgid "進行中的挑戰"
+msgstr "進行中的挑戰"
+
+msgid "即將開始"
+msgstr "即將開始"
+
+msgid "📅 每日打卡"
+msgstr "📅 每日打卡"
+
+msgid "📆 每週挑戰"
+msgstr "📆 每週挑戰"
+
+msgid "📅 每日"
+msgstr "📅 每日"
+
+msgid "📆 每週"
+msgstr "📆 每週"
+
+msgid "📅 每日挑戰"
+msgstr "📅 每日挑戰"
+
+msgid "進行中"
+msgstr "進行中"
+
+msgid "已結束"
+msgstr "已結束"
+
+msgid "即將開放"
+msgstr "即將開放"
+
+msgid "基本分：+"
+msgstr "基本分：+"
+
+msgid "分/天"
+msgstr "分/天"
+
+msgid "連擊加分：+"
+msgstr "連擊加分：+"
+
+msgid "查看進度 ✓"
+msgstr "查看進度 ✓"
+
+msgid "🚀 立即加入"
+msgstr "🚀 立即加入"
+
+msgid "查看詳情 ➔"
+msgstr "查看詳情 ➔"
+
+msgid "登入後加入"
+msgstr "登入後加入"
+
+msgid "開始"
+msgstr "開始"
+
+msgid "每次"
+msgstr "每次"
+
+msgid "分"
+msgstr "分"
+
+msgid "目前沒有可參加的挑戰，請稍後再來！"
+msgstr "目前沒有可參加的挑戰，請稍後再來！"
+
+msgid "← 返回挑戰列表"
+msgstr "← 返回挑戰列表"
+
+msgid "挑戰說明"
+msgstr "挑戰說明"
+
+msgid "每次打卡"
+msgstr "每次打卡"
+
+msgid "連續紅利 +"
+msgstr "連續紅利 +"
+
+msgid "排行榜 TOP 5"
+msgstr "排行榜 TOP 5"
+
+msgid "名次"
+msgstr "名次"
+
+msgid "暱稱"
+msgstr "暱稱"
+
+msgid "總分"
+msgstr "總分"
+
+msgid "連續天數"
+msgstr "連續天數"
+
+msgid "天"
+msgstr "天"
+
+msgid "🏆 查看完整排行榜"
+msgstr "🏆 查看完整排行榜"
+
+msgid "還沒有人加入，快成為第一位！"
+msgstr "還沒有人加入，快成為第一位！"
+
+msgid "我的打卡紀錄"
+msgstr "我的打卡紀錄"
+
+msgid "🎯 我的個人打卡儀表板"
+msgstr "🎯 我的個人打卡儀表板"
+
+msgid "🔥 連續打卡天數"
+msgstr "🔥 連續打卡天數"
+
+msgid "⭐ 累計總積分"
+msgstr "⭐ 累計總積分"
+
+msgid "📊 打卡次數"
+msgstr "📊 打卡次數"
+
+msgid "加入挑戰，開始你的打卡旅程！"
+msgstr "加入挑戰，開始你的打卡旅程！"
+
+msgid "🎉 今日已打卡完成！"
+msgstr "🎉 今日已打卡完成！"
+
+msgid "⚡ 立即打卡"
+msgstr "⚡ 立即打卡"
+
+msgid "此挑戰已結束"
+msgstr "此挑戰已結束"
+
+msgid "此挑戰不在活動期間"
+msgstr "此挑戰不在活動期間"
+
+msgid "📤 分享我的成就"
+msgstr "📤 分享我的成就"
+
+msgid "登入後即可加入挑戰與打卡"
+msgstr "登入後即可加入挑戰與打卡"
+
+msgid "登入參加"
+msgstr "登入參加"
+
+msgid "← 返回挑戰詳情"
+msgstr "← 返回挑戰詳情"
+
+msgid "🏆 挑戰即時榮譽榜"
+msgstr "🏆 挑戰即時榮譽榜"
+
+msgid "即時更新前 50 名優秀挑戰者"
+msgstr "即時更新前 50 名優秀挑戰者"
+
+msgid "你目前的排名"
+msgstr "你目前的排名"
+
+msgid "第"
+msgstr "第"
+
+msgid "名"
+msgstr "名"
+
+msgid "⭐ 總分"
+msgstr "⭐ 總分"
+
+msgid "🔥 連續天數"
+msgstr "🔥 連續天數"
+
+msgid "排行榜尚無資料"
+msgstr "排行榜尚無資料"
+
+msgid "🎯 我的挑戰"
+msgstr "🎯 我的挑戰"
+
+msgid "追蹤你加入的挑戰與打卡進度"
+msgstr "追蹤你加入的挑戰與打卡進度"
+
+msgid "加入於"
+msgstr "加入於"
+
+msgid "查看詳細"
+msgstr "查看詳細"
+
+msgid "🏆 排行榜"
+msgstr "🏆 排行榜"
+
+msgid "你還沒有加入任何挑戰"
+msgstr "你還沒有加入任何挑戰"
+
+msgid "瀏覽挑戰列表"
+msgstr "瀏覽挑戰列表"
+
+msgid "登入 / 註冊 - A Little Wonder 粉絲打卡挑戰"
+msgstr "登入 / 註冊 - A Little Wonder 粉絲打卡挑戰"
+
+msgid "快速註冊 - A Little Wonder 粉絲打卡挑戰"
+msgstr "快速註冊 - A Little Wonder 粉絲打卡挑戰"
+
+msgid "登入 / 快速註冊"
+msgstr "登入 / 快速註冊"
+
+msgid "加入打卡挑戰"
+msgstr "加入打卡挑戰"
+
+msgid "全站統一採用 Google 帳號一鍵登入，快速安全免密碼！"
+msgstr "全站統一採用 Google 帳號一鍵登入，快速安全免密碼！"
+
+msgid "使用 Google 帳號一鍵授權，立即建立你的專屬挑戰帳號！"
+msgstr "使用 Google 帳號一鍵授權，立即建立你的專屬挑戰帳號！"
+
+msgid "使用 Google 帳號登入 / 註冊"
+msgstr "使用 Google 帳號登入 / 註冊"
+
+msgid "使用 Google 帳號快速註冊 / 登入"
+msgstr "使用 Google 帳號快速註冊 / 登入"
+
+msgid "✨ Google 一鍵登入特色"
+msgstr "✨ Google 一鍵登入特色"
+
+msgid "首次授權即<strong>自動完成新會員註冊</strong>"
+msgstr "首次授權即<strong>自動完成新會員註冊</strong>"
+
+msgid "無需額外填寫密碼，杜絕帳號密碼外洩"
+msgstr "無需額外填寫密碼，杜絕帳號密碼外洩"
+
+msgid "即時同步挑戰打卡進度與排行榜積分"
+msgstr "即時同步挑戰打卡進度與排行榜積分"
+
+msgid "🔒 免填表單・即刻出發"
+msgstr "🔒 免填表單・即刻出發"
+
+msgid "點擊上方 Google 登入按鈕授權後，系統將自動為您完成帳號配置並直接進入挑戰首頁，省去填寫帳號密碼的繁瑣步驟。"
+msgstr "點擊上方 Google 登入按鈕授權後，系統將自動為您完成帳號配置並直接進入挑戰首頁，省去填寫帳號密碼的繁瑣步驟。"
+
+msgid "已經擁有帳號？"
+msgstr "已經擁有帳號？"
+
+msgid "前往登入頁面"
+msgstr "前往登入頁面"
+
+msgid "系統管理者後台登入："
+msgstr "系統管理者後台登入："

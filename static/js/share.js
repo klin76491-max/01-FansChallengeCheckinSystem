@@ -8,10 +8,18 @@
  * 3. 最終降級至隱藏 textarea + execCommand
  */
 
+function isEnglish() {
+  const lang = (document.documentElement.lang || '').toLowerCase();
+  return lang.startsWith('en');
+}
+
 function handleShare(challengeTitle, streak, points) {
+  const isEn = isEnglish();
   const shareData = {
-    title: `我正在參加【${challengeTitle}】`,
-    text: `我已經連續打卡 ${streak} 天，累積獲得 ${points} 分！快來跟我一起挑戰吧！`,
+    title: isEn ? `I am taking the [${challengeTitle}]` : `我正在參加【${challengeTitle}】`,
+    text: isEn 
+      ? `I've checked in for ${streak} days continuously and earned ${points} points! Join me now!`
+      : `我已經連續打卡 ${streak} 天，累積獲得 ${points} 分！快來跟我一起挑戰吧！`,
     url: window.location.href
   };
 
@@ -29,9 +37,10 @@ function handleShare(challengeTitle, streak, points) {
 }
 
 async function fallbackCopy(text) {
+  const isEn = isEnglish();
   try {
     await navigator.clipboard.writeText(text);
-    showToast('分享文案與連結已複製到剪貼簿！', 'info');
+    showToast(isEn ? 'Share text and link copied to clipboard!' : '分享文案與連結已複製到剪貼簿！', 'info');
   } catch (err) {
     // 最後手段：建立臨時輸入框
     const textarea = document.createElement('textarea');
@@ -43,9 +52,9 @@ async function fallbackCopy(text) {
     textarea.select();
     try {
       document.execCommand('copy');
-      showToast('分享文案已複製到剪貼簿！', 'info');
+      showToast(isEn ? 'Share text copied to clipboard!' : '分享文案已複製到剪貼簿！', 'info');
     } catch (e) {
-      showToast('複製失敗，請手動複製網址。', 'warning');
+      showToast(isEn ? 'Copy failed, please copy URL manually.' : '複製失敗，請手動複製網址。', 'warning');
     }
     document.body.removeChild(textarea);
   }

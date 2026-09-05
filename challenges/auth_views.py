@@ -62,7 +62,7 @@ class GoogleCallbackView(View):
             user = GoogleAuthService.get_or_create_google_user(profile)
 
             # 4. 登入 Django Session
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"歡迎回來，{user.first_name or user.username}！已成功使用 Google 帳號登入。")
 
             redirect_url = getattr(settings, 'LOGIN_REDIRECT_URL', '/challenges/')

@@ -252,3 +252,110 @@ class GoogleOAuthViewsTestCase(TestCase):
         # 驗證使用者已處於登入狀態
         self.assertIn('_auth_user_id', self.client.session)
 
+
+class ChallengeCreateAndGridTestCase(TestCase):
+    """自訂挑戰建立與 14 天格子功能測試"""
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='creator', password='password123')
+        self.now = timezone.now()
+
+    def test_challenge_create_requires_login(self):
+        """測試未登入建立挑戰重導向至登入頁"""
+        response = self.client.get(reverse('challenges:create'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_challenge_create_get_authenticated(self):
+        """測試登入使用者存取建立挑戰頁面"""
+        self.client.login(username='creator', password='password123')
+        response = self.client.get(reverse('challenges:create'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '建立專屬打卡挑戰')
+
+    def test_challenge_create_post_success(self):
+        """測試登入使用者成功發起挑戰，且自動加入該挑戰"""
+        self.client.login(username='creator', password='password123')
+        post_data = {
+            'title': '14天英語新聞閱讀挑戰',
+            'description': '每天閱讀一篇 BBC 英文新聞並打卡',
+            'challenge_type': 'daily',
+            'start_at': (self.now - timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M'),
+            'end_at': (self.now + timedelta(days=14)).strftime('%Y-%m-%dT%H:%M'),
+            'points_per_checkin': 15,
+            'bonus_for_streak': 8,
+            'share_enabled': True,
+        }
+        response = self.client.post(reverse('challenges:create'), data=post_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        # 驗證挑戰已建立且 created_by 正確
+        challenge = Challenge.objects.get(title='14天英語新聞閱讀挑戰')
+        self.assertEqual(challenge.created_by, self.user)
+        self.assertEqual(challenge.points_per_checkin, 15)
+
+        # 驗證建立者自動被加入為參與者
+        participant = Participant.objects.get(user=self.user, challenge=challenge)
+        self.assertEqual(participant.current_streak, 0)
+
+    def test_challenge_detail_14day_grid_rendering(self):
+        """測試 14 天打卡格子 context 正確渲染與狀態標記"""
+        challenge = Challenge.objects.create(
+            title='14天閱讀挑戰',
+            description='說明',
+            start_at=self.now - timedelta(days=5),
+            end_at=self.now + timedelta(days=9),
+            is_active=True,
+        )
+        self.client.login(username='creator', password='password123')
+        participant = Participant.objects.create(
+            user=self.user,
+            challenge=challenge,
+            current_streak=2,
+            total_points=20,
+        )
+        # 建立 2 筆過往打卡紀錄
+        CheckIn.objects.create(
+            user=self.user,
+            challenge=challenge,
+            check_in_date=timezone.localdate() - timedelta(days=2),
+            score_earned=10
+        )
+        CheckIn.objects.create(
+            user=self.user,
+            challenge=challenge,
+            check_in_date=timezone.localdate() - timedelta(days=1),
+            score_earned=10
+        )
+
+        response = self.client.get(reverse('challenges:detail', kwargs={'pk': challenge.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['checkin_count'], 2)
+        self.assertEqual(len(response.context['grid_days']), 14)
+        # Day 1 & Day 2 completed
+        self.assertTrue(response.context['grid_days'][0]['is_completed'])
+        self.assertTrue(response.context['grid_days'][1]['is_completed'])
+        # Day 3 is current (today's target)
+        self.assertTrue(response.context['grid_days'][2]['is_current'])
+        # Day 4 is locked
+        self.assertTrue(response.context['grid_days'][3]['is_locked'])
+
+    def test_checkin_api_returns_total_checkins(self):
+        """測試打卡 API 回傳累計打卡總天數 total_checkins"""
+        challenge = Challenge.objects.create(
+            title='即時打卡挑戰',
+            description='說明',
+            start_at=self.now - timedelta(days=1),
+            end_at=self.now + timedelta(days=13),
+            is_active=True,
+        )
+        self.client.login(username='creator', password='password123')
+        Participant.objects.create(user=self.user, challenge=challenge)
+
+        response = self.client.post(reverse('challenges:api_checkin', kwargs={'challenge_id': challenge.id}))
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['total_checkins'], 1)
+
+

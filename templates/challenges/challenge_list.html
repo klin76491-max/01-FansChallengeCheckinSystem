@@ -1,45 +1,58 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}挑戰列表 - A Little Wonder 粉絲打卡挑戰{% endblock %}
+{% block title %}{% trans "挑戰列表" %} - A Little Wonder {% trans "粉絲打卡挑戰" %}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1 class="page-title">🔥 探索正在進行中的熱門挑戰</h1>
-  <p class="page-subtitle">堅持每天打卡，養成好習慣！</p>
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: var(--space-md);">
+  <div>
+    <h1 class="page-title">{% trans "🔥 探索正在進行中的熱門挑戰" %}</h1>
+    <p class="page-subtitle">{% trans "堅持每天打卡，養成好習慣！" %}</p>
+  </div>
+  <div>
+    {% if user.is_authenticated %}
+    <a href="{% url 'challenges:create' %}" class="btn btn-primary" id="btn-create-challenge-header">
+      ➕ {% trans "建立我的打卡挑戰" %}
+    </a>
+    {% else %}
+    <a href="{% url 'login' %}?next={% url 'challenges:create' %}" class="btn btn-primary" id="btn-login-create-challenge">
+      ➕ {% trans "登入後建立挑戰" %}
+    </a>
+    {% endif %}
+  </div>
 </div>
-
 
 {% if ongoing_challenges %}
 <section>
   <div class="section-header">
     <span class="section-icon">⚡</span>
-    <h2 class="section-title">進行中的挑戰</h2>
+    <h2 class="section-title">{% trans "進行中的挑戰" %}</h2>
   </div>
   <div class="card-grid">
     {% for challenge in ongoing_challenges %}
     <div class="card challenge-card" id="challenge-card-{{ challenge.id }}">
       <span class="challenge-type-badge {% if challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
-        {% if challenge.challenge_type == 'daily' %}📅 每日打卡{% else %}📆 每週挑戰{% endif %}
+        {% if challenge.challenge_type == 'daily' %}{% trans "📅 每日打卡" %}{% else %}{% trans "📆 每週挑戰" %}{% endif %}
       </span>
-      <span class="challenge-status-badge badge-ongoing">進行中</span>
+      <span class="challenge-status-badge badge-ongoing">{% trans "進行中" %}</span>
       <h3 class="challenge-title">{{ challenge.title }}</h3>
       <p class="challenge-desc">{{ challenge.description }}</p>
       <div class="challenge-meta">
         <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} ~ {{ challenge.end_at|date:"Y/m/d" }}</span>
-        <span class="challenge-meta-item">💰 基本分：+{{ challenge.points_per_checkin }}分/天</span>
-        <span class="challenge-meta-item">⚡ 連擊加分：+{{ challenge.bonus_for_streak }}分/天</span>
+        <span class="challenge-meta-item">💰 {% trans "基本分：+" %}{{ challenge.points_per_checkin }}{% trans "分/天" %}</span>
+        <span class="challenge-meta-item">⚡ {% trans "連擊加分：+" %}{{ challenge.bonus_for_streak }}{% trans "分/天" %}</span>
       </div>
       <div class="card-actions">
         {% if user.is_authenticated %}
           {% if challenge.id in joined_challenge_ids %}
-            <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-success" id="view-progress-{{ challenge.id }}">查看進度 ✓</a>
+            <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-success" id="view-progress-{{ challenge.id }}">{% trans "查看進度 ✓" %}</a>
           {% else %}
-            <button class="btn btn-primary" id="join-btn-{{ challenge.id }}" data-challenge-id="{{ challenge.id }}">🚀 立即加入</button>
+            <button class="btn btn-primary" id="join-btn-{{ challenge.id }}" data-challenge-id="{{ challenge.id }}">{% trans "🚀 立即加入" %}</button>
           {% endif %}
         {% else %}
-          <a href="{% url 'login' %}?next={% url 'challenges:list' %}" class="btn btn-primary">登入後加入</a>
+          <a href="{% url 'login' %}?next={% url 'challenges:list' %}" class="btn btn-primary">{% trans "登入後加入" %}</a>
         {% endif %}
-        <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-outline" id="detail-btn-{{ challenge.id }}">查看詳情 ➔</a>
+        <a href="{% url 'challenges:detail' challenge.pk %}" class="btn btn-outline" id="detail-btn-{{ challenge.id }}">{% trans "查看詳情 ➔" %}</a>
       </div>
     </div>
     {% endfor %}
@@ -51,22 +64,22 @@
 <section style="margin-top: var(--space-2xl);">
   <div class="section-header">
     <span class="section-icon">🚀</span>
-    <h2 class="section-title">即將開始</h2>
+    <h2 class="section-title">{% trans "即將開始" %}</h2>
   </div>
   <div class="card-grid">
     {% for challenge in upcoming_challenges %}
     <div class="card challenge-card" id="challenge-card-{{ challenge.id }}">
       <span class="challenge-type-badge {% if challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
-        {% if challenge.challenge_type == 'daily' %}📅 每日{% else %}📆 每週{% endif %}
+        {% if challenge.challenge_type == 'daily' %}{% trans "📅 每日" %}{% else %}{% trans "📆 每週" %}{% endif %}
       </span>
-      <span class="challenge-status-badge badge-upcoming">即將開始</span>
+      <span class="challenge-status-badge badge-upcoming">{% trans "即將開始" %}</span>
       <h3 class="challenge-title">{{ challenge.title }}</h3>
       <p class="challenge-desc">{{ challenge.description }}</p>
       <div class="challenge-meta">
-        <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} 開始</span>
-        <span class="challenge-meta-item">🏆 每次 {{ challenge.points_per_checkin }} 分</span>
+        <span class="challenge-meta-item">🗓️ {{ challenge.start_at|date:"Y/m/d" }} {% trans "開始" %}</span>
+        <span class="challenge-meta-item">🏆 {% trans "每次" %} {{ challenge.points_per_checkin }} {% trans "分" %}</span>
       </div>
-      <button class="btn btn-disabled" disabled>即將開放</button>
+      <button class="btn btn-disabled" disabled>{% trans "即將開放" %}</button>
     </div>
     {% endfor %}
   </div>
@@ -76,7 +89,7 @@
 {% if not ongoing_challenges and not upcoming_challenges %}
 <div class="empty-state">
   <div class="empty-state-icon">🏖️</div>
-  <p class="empty-state-text">目前沒有可參加的挑戰，請稍後再來！</p>
+  <p class="empty-state-text">{% trans "目前沒有可參加的挑戰，請稍後再來！" %}</p>
 </div>
 {% endif %}
 {% endblock %}

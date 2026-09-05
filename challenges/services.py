@@ -160,11 +160,14 @@ class CheckInService:
             participant.total_points += earned_points
             participant.save(update_fields=['current_streak', 'total_points', 'updated_at'])
 
+            total_checkins = CheckIn.objects.filter(user=user, challenge=challenge).count()
+
             return {
                 'success': True,
                 'score_earned': earned_points,
                 'new_streak': new_streak,
                 'total_points': participant.total_points,
+                'total_checkins': total_checkins,
                 'message': f"打卡成功！獲得 {earned_points} 積分，連續打卡 {new_streak} 天！"
             }
 

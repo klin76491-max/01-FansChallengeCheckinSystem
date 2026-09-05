@@ -44,11 +44,17 @@ function showToast(message, type = 'success') {
   }, 3000);
 }
 
+function isEnglish() {
+  const lang = (document.documentElement.lang || '').toLowerCase();
+  return lang.startsWith('en');
+}
+
 // ===== 加入挑戰 =====
 async function joinChallenge(challengeId, buttonEl) {
+  const isEn = isEnglish();
   buttonEl.disabled = true;
   const originalText = buttonEl.textContent;
-  buttonEl.textContent = '加入中...';
+  buttonEl.textContent = isEn ? 'Joining...' : '加入中...';
 
   try {
     const response = await fetch(`/challenges/api/${challengeId}/join/`, {
@@ -63,19 +69,19 @@ async function joinChallenge(challengeId, buttonEl) {
 
     if (data.success) {
       showToast(data.message, 'success');
-      buttonEl.textContent = '✓ 已加入';
+      buttonEl.textContent = isEn ? '✓ Joined' : '✓ 已加入';
       buttonEl.className = 'btn btn-success';
       buttonEl.disabled = true;
 
       // 重新整理頁面以顯示打卡區塊
       setTimeout(() => location.reload(), 800);
     } else {
-      showToast(data.error || data.message || '加入失敗', 'error');
+      showToast(data.error || data.message || (isEn ? 'Failed to join' : '加入失敗'), 'error');
       buttonEl.disabled = false;
       buttonEl.textContent = originalText;
     }
   } catch (error) {
-    showToast('網路錯誤，請稍後再試', 'error');
+    showToast(isEn ? 'Network error, please try again later' : '網路錯誤，請稍後再試', 'error');
     buttonEl.disabled = false;
     buttonEl.textContent = originalText;
   }
@@ -83,8 +89,9 @@ async function joinChallenge(challengeId, buttonEl) {
 
 // ===== 打卡 =====
 async function checkIn(challengeId, buttonEl) {
+  const isEn = isEnglish();
   buttonEl.disabled = true;
-  buttonEl.innerHTML = '<span class="spinner"></span> 打卡處理中...';
+  buttonEl.innerHTML = `<span class="spinner"></span> ${isEn ? 'Checking in...' : '打卡處理中...'}`;
   buttonEl.style.background = '#2d7a8a'; // Accent Teal 處理中狀態
 
   try {
@@ -102,7 +109,7 @@ async function checkIn(challengeId, buttonEl) {
       showToast(data.message, 'success');
 
       // 切換按鈕狀態為已完成 (Success Green)
-      buttonEl.textContent = '🎉 今日已打卡完成！';
+      buttonEl.textContent = isEn ? '🎉 Checked in for today!' : '🎉 今日已打卡完成！';
       buttonEl.className = 'btn btn-checked btn-lg btn-block checkin-btn';
       buttonEl.style.background = '';
       buttonEl.disabled = true;
@@ -121,20 +128,44 @@ async function checkIn(challengeId, buttonEl) {
         totalEl.classList.add('animate-score');
       }
       if (scoreEl) {
-        scoreEl.textContent = `+${data.score_earned} 積分！`;
+        scoreEl.textContent = isEn ? `+${data.score_earned} Points!` : `+${data.score_earned} 積分！`;
         scoreEl.classList.add('animate-score');
         scoreEl.style.display = 'block';
       }
+
+      // 動態即時點亮 14 天格子
+      if (data.total_checkins) {
+        const checkinCount = data.total_checkins;
+        const targetBox = document.getElementById(`grid-day-${checkinCount}`);
+        if (targetBox) {
+          targetBox.classList.remove('is-current', 'is-locked');
+          targetBox.classList.add('is-completed', 'animate-lit');
+          const iconEl = targetBox.querySelector('.grid-day-icon');
+          if (iconEl) iconEl.innerHTML = '<span class="icon-check">✓</span>';
+          const statusEl = targetBox.querySelector('.grid-day-status');
+          if (statusEl) statusEl.textContent = isEn ? 'Lit Up' : '已點亮';
+        }
+
+        // 更新計數與進度條
+        const progressCountEl = document.getElementById('grid-progress-count');
+        const progressRateEl = document.getElementById('grid-progress-rate');
+        const progressFillEl = document.getElementById('grid-progress-fill');
+        const pct = Math.min(100, Math.round((checkinCount / 14) * 100));
+
+        if (progressCountEl) progressCountEl.textContent = checkinCount;
+        if (progressRateEl) progressRateEl.textContent = `(${pct}%)`;
+        if (progressFillEl) progressFillEl.style.width = `${pct}%`;
+      }
     } else {
-      showToast(data.error || '打卡失敗，請稍後重試。', 'danger');
+      showToast(data.error || (isEn ? 'Check-in failed, please retry.' : '打卡失敗，請稍後重試。'), 'danger');
       buttonEl.disabled = false;
-      buttonEl.innerHTML = '⚡ 立即打卡';
+      buttonEl.innerHTML = isEn ? '⚡ Check in Now' : '⚡ 立即打卡';
       buttonEl.style.background = '';
     }
   } catch (err) {
-    showToast('網路連線異常，請檢查網路。', 'danger');
+    showToast(isEn ? 'Network connection error, please check connection.' : '網路連線異常，請檢查網路。', 'danger');
     buttonEl.disabled = false;
-    buttonEl.innerHTML = '⚡ 立即打卡';
+    buttonEl.innerHTML = isEn ? '⚡ Check in Now' : '⚡ 立即打卡';
     buttonEl.style.background = '';
   }
 }
