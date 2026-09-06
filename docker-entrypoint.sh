@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# 自動載入 .env 環境變數 (若存在)
+if [ -f ".env" ]; then
+    set -a
+    . ./.env
+    set +a
+fi
+
 # 若存在語系編譯腳本，編譯多國語系翻譯檔
 if [ -f compile_translations.py ]; then
     echo ">>> [Docker Entrypoint] 正在編譯多國語系翻譯檔..."
