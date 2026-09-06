@@ -3,6 +3,7 @@ FROM python:3.12-slim
 # 設定環境變數
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV DATA_DIR=/app/data
 
 # 設定工作目錄
 WORKDIR /app
