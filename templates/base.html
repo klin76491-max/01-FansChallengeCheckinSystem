@@ -9,17 +9,18 @@
   <title>{% block title %}{% trans "粉絲挑戰打卡" %}{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Serif+TC:wght@400;600;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 </head>
 
 <body>
-  <!-- Navigation (Primary Blue #1a3a52) -->
+  <!-- Navigation (Deep Cocoa Bookcloth #3E2F27) -->
   <nav class="navbar" id="main-nav">
     <div class="nav-container">
       <a href="{% url 'challenges:list' %}" class="nav-brand">
-        <span class="brand-icon">🔥</span>
+        <span class="brand-icon">✨</span>
         <span class="brand-text">A Little Wonder</span>
+        <span class="brand-subtext font-serif">{% trans "十四天" %}</span>
       </a>
       <div class="nav-links">
         <a href="{% url 'challenges:list' %}" class="nav-link" id="nav-challenges">{% trans "挑戰列表" %}</a>
@@ -75,7 +76,8 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
-      <p>&copy; 2026 A Little Wonder {% trans "粉絲打卡挑戰" %}. All rights reserved.</p>
+      <p class="footer-story-quote font-serif">{% trans "「十四天，做完一個東西。每天完成一次，就點亮一格。想和做之間，其實可以被拉近一些。」" %}</p>
+      <p class="footer-copy">{% trans "© 2026 A Little Wonder • 《04_Story.md》第一章 十四天" %}</p>
     </div>
   </footer>
 

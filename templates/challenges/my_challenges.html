@@ -1,57 +1,60 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "我的挑戰" %} - A Little Wonder {% trans "粉絲打卡挑戰" %}{% endblock %}
+{% block title %}{% trans "我的十四天約定" %} - A Little Wonder{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <h1 class="page-title">{% trans "🎯 我的挑戰" %}</h1>
-  <p class="page-subtitle">{% trans "追蹤你加入的挑戰與打卡進度" %}</p>
+<div class="page-header" style="margin-bottom: var(--space-xl);">
+  <h1 class="page-title">{% trans "🎯 我的約定旅程" %}</h1>
+  <p class="page-subtitle font-serif">{% trans "看見自己親手點亮的一格又一格，想做與做之間，正在慢慢拉近。" %}</p>
 </div>
 
 {% if participations %}
 <div class="card-grid">
   {% for p in participations %}
   <div class="card challenge-card" id="my-challenge-{{ p.challenge.id }}">
-    <div style="display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: var(--space-xs); flex-wrap: wrap; margin-bottom: var(--space-xs);">
       <span class="challenge-type-badge {% if p.challenge.challenge_type == 'daily' %}badge-daily{% else %}badge-weekly{% endif %}">
-        {% if p.challenge.challenge_type == 'daily' %}{% trans "📅 每日" %}{% else %}{% trans "📆 每週" %}{% endif %}
+        {% if p.challenge.challenge_type == 'daily' %}{% trans "📅 每日點亮" %}{% else %}{% trans "📆 每週里程" %}{% endif %}
       </span>
       {% if p.challenge.is_ended %}
-        <span class="challenge-status-badge badge-ended">{% trans "已結束" %}</span>
+        <span class="challenge-status-badge badge-ended">{% trans "已圓滿結束" %}</span>
       {% else %}
         <span class="challenge-status-badge badge-ongoing">{% trans "進行中" %}</span>
       {% endif %}
     </div>
     <h3 class="challenge-title">{{ p.challenge.title }}</h3>
 
-    <div class="stats-row" style="border-top: none; padding-top: 0; margin-top: var(--space-md); justify-content: flex-start; gap: var(--space-2xl);">
-      <div class="stat-item">
-        <div class="stat-value">{{ p.current_streak }}</div>
+    <div class="stats-row" style="border-top: none; padding-top: 0; margin-top: var(--space-md); justify-content: flex-start; gap: var(--space-xl);">
+      <div class="stat-item" style="text-align: left;">
+        <div class="stat-value" style="color: var(--color-accent);">{{ p.current_streak }}</div>
         <div class="stat-label">{% trans "🔥 連續天數" %}</div>
       </div>
-      <div class="stat-item">
+      <div class="stat-item" style="text-align: left;">
         <div class="stat-value">{{ p.total_points }}</div>
-        <div class="stat-label">{% trans "⭐ 累計總積分" %}</div>
+        <div class="stat-label">{% trans "⭐ 累積積分" %}</div>
       </div>
     </div>
 
     <div class="challenge-meta" style="margin-top: var(--space-md);">
-      <span class="challenge-meta-item">🗓️ {% trans "加入於" %} {{ p.joined_at|date:"Y/m/d" }}</span>
+      <span class="challenge-meta-item">🗓️ {% trans "啟程於" %} {{ p.joined_at|date:"Y/m/d" }}</span>
     </div>
 
     <div class="card-actions">
-      <a href="{% url 'challenges:detail' p.challenge.pk %}" class="btn btn-primary" id="my-detail-{{ p.challenge.id }}">{% trans "查看詳細" %}</a>
-      <a href="{% url 'challenges:leaderboard' p.challenge.pk %}" class="btn btn-outline" id="my-leaderboard-{{ p.challenge.id }}">{% trans "🏆 排行榜" %}</a>
+      <a href="{% url 'challenges:detail' p.challenge.pk %}" class="btn btn-accent" id="my-detail-{{ p.challenge.id }}">{% trans "點亮今日約定 ➔" %}</a>
+      <a href="{% url 'challenges:leaderboard' p.challenge.pk %}" class="btn btn-outline" id="my-leaderboard-{{ p.challenge.id }}">{% trans "✨ 同行者名冊" %}</a>
     </div>
   </div>
   {% endfor %}
 </div>
 {% else %}
-<div class="empty-state">
-  <div class="empty-state-icon">🎮</div>
-  <p class="empty-state-text">{% trans "你還沒有加入任何挑戰" %}</p>
-  <a href="{% url 'challenges:list' %}" class="btn btn-primary btn-lg" id="browse-challenges">{% trans "瀏覽挑戰列表" %}</a>
+<div class="card text-center" style="padding: var(--space-2xl); text-align: center;">
+  <div style="font-size: 2.4rem; margin-bottom: var(--space-sm);">🕯️</div>
+  <h3 class="font-serif" style="color: var(--text-primary); margin-bottom: var(--space-xs);">{% trans "你還沒有加入任何約定" %}</h3>
+  <p class="font-serif" style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+    {% trans "給自己一個規則：十四天，做完一個東西。從一個很小的習慣開始吧。" %}
+  </p>
+  <a href="{% url 'challenges:list' %}" class="btn btn-accent" id="browse-challenges">{% trans "瀏覽現有約定列表" %}</a>
 </div>
 {% endif %}
 {% endblock %}

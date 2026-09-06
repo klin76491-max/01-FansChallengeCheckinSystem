@@ -288,3 +288,282 @@ msgstr "Go to Login"
 
 msgid "系統管理者後台登入："
 msgstr "System Admin Login:"
+
+msgid " 積分"
+msgstr " Points"
+
+msgid "+ 建立我的第一個約定"
+msgstr "+ Create My First Pact"
+
+msgid "+ 建立挑戰"
+msgstr "+ Create Challenge"
+
+msgid "+ 發起新的十四天約定"
+msgstr "+ Start a New 14-Day Pact"
+
+msgid "14 天習慣約定 (故事推薦)"
+msgstr "14-Day Habit Pact (Story Recommended)"
+
+msgid "21 天深耕"
+msgstr "21 Days Deep Practice"
+
+msgid "30 天全景"
+msgstr "30 Days Full Journey"
+
+msgid "7 天微步"
+msgstr "7 Days Small Steps"
+
+msgid "← 返回約定頁面"
+msgstr "← Back to Pact Page"
+
+msgid "✨ 同行旅人名冊"
+msgstr "✨ Fellow Travelers List"
+
+msgid "✨ 同行者名冊"
+msgstr "✨ Fellow Travelers"
+
+msgid "✨ 建立專屬打卡挑戰"
+msgstr "✨ Create Your Check-in Challenge"
+
+msgid "⭐ 累積積分"
+msgstr "⭐ Cumulative Points"
+
+msgid "今日約定"
+msgstr "Today's Pact"
+
+msgid "今日約定已點亮！明天再會。"
+msgstr "Today's pact is lit up! See you tomorrow."
+
+msgid "你目前在此約定中的序位"
+msgstr "Your Current Rank in this Pact"
+
+msgid "你還沒有加入任何約定"
+msgstr "You haven't joined any pacts yet"
+
+msgid "例如：每天讀 15 分鐘英文、每天寫 200 字日記、每天做 20 個深蹲..."
+msgstr "e.g., Read English for 15 mins daily, journal 200 words, do 20 squats..."
+
+msgid "允許點亮後生成分享手帳卡"
+msgstr "Allow generating a shareable notebook card upon check-in"
+
+msgid "分享我點亮的痕跡"
+msgstr "Share My Trace"
+
+msgid "十四天"
+msgstr "Fourteen Days"
+
+msgid "十四天的約定"
+msgstr "Fourteen-Day Pact"
+
+msgid "十四天點亮旅程"
+msgstr "14-Day Light-Up Journey"
+
+msgid "即將啟程"
+msgstr "Starting Soon"
+
+msgid "即將開放約定"
+msgstr "Pacts Opening Soon"
+
+msgid "同行旅人名冊"
+msgstr "Fellow Travelers List"
+
+msgid "啟程於"
+msgstr "Started on"
+
+msgid "啟程日期"
+msgstr "Start Date"
+
+msgid "堅持天數"
+msgstr "Days of Persistence"
+
+msgid "定下這份十四天的約定"
+msgstr "Make this 14-Day Pact"
+
+msgid "寫給未來的自己：為什麼想開始？每天只要做到哪一步就算點亮一格？"
+msgstr "Note to future self: Why start? What counts as lighting up one box today?"
+
+msgid "已圓滿結束"
+msgstr "Completed"
+
+msgid "已點亮"
+msgstr "Lit Up"
+
+msgid "已點亮次數"
+msgstr "Days Completed"
+
+msgid "序位"
+msgstr "Rank"
+
+msgid "待啟程"
+msgstr "Upcoming"
+
+msgid "成就分享"
+msgstr "Achievement Share"
+
+msgid "我的十四天約定"
+msgstr "My 14-Day Pacts"
+
+msgid "抵達日期"
+msgstr "Target End Date"
+
+msgid "持續約定紅利 +"
+msgstr "Streak Bonus +"
+
+msgid "推薦約定週期"
+msgstr "Recommended Cycles"
+
+msgid "旅人"
+msgstr "Traveler"
+
+msgid "暫時返回"
+msgstr "Go Back"
+
+msgid "此約定目前不在啟動期間"
+msgstr "This pact is not currently active"
+
+msgid "每次點亮"
+msgstr "Per Check-in"
+
+msgid "每次點亮基礎積分"
+msgstr "Base Points per Check-in"
+
+msgid "每次點亮累積"
+msgstr "Base points earned per check-in"
+
+msgid "每次點亮：+"
+msgstr "Per check-in: +"
+
+msgid "瀏覽現有約定列表"
+msgstr "Browse Existing Pacts"
+
+msgid "留下的點亮軌跡"
+msgstr "Traces Left Behind"
+
+msgid "登入並啟程"
+msgstr "Log In & Embark"
+
+msgid "登入後發起約定"
+msgstr "Log In to Create a Pact"
+
+msgid "登入後，即可開啟這段屬於你的十四天旅程。"
+msgstr "Log in to begin your very own 14-day journey."
+
+msgid "目前還沒有同行者的紀錄，點亮今天的第一格吧！"
+msgstr "No fellow travelers yet. Light up today's first box!"
+
+msgid "目前還沒有正在進行的約定"
+msgstr "There are no ongoing pacts at the moment"
+
+msgid "看見彼此在同一條路上點亮的一格又一格痕跡"
+msgstr "Witness the boxes lit up by one another along the very same path"
+
+msgid "看見自己親手點亮的一格又一格，想做與做之間，正在慢慢拉近。"
+msgstr "Seeing each box you light up with your own hands closes the gap between wanting and doing."
+
+msgid "積分"
+msgstr "Points"
+
+msgid "立下十四天的約定"
+msgstr "Make a 14-Day Pact"
+
+msgid "立下這份約定"
+msgstr "Commit to this Pact"
+
+msgid "約定主題"
+msgstr "Pact Title"
+
+msgid "約定規則與初心"
+msgstr "Rules & Intention"
+
+msgid "累積積分"
+msgstr "Total Points"
+
+msgid "累積能量"
+msgstr "Energy Points"
+
+msgid "給自己一個規則：十四天，做完一個小東西。現在就發起第一個約定吧！"
+msgstr "A rule for yourself: Fourteen days, make one small thing. Start your first pact now!"
+
+msgid "給自己一個規則：十四天，做完一個東西。從一個很小的習慣開始吧。"
+msgstr "A rule for yourself: Fourteen days, make one thing. Start from a tiny habit."
+
+msgid "給自己一個規則：選一件事、每天完成一次就點亮一格。讓想和做之間，拉近一些。"
+msgstr "Give yourself a rule: Pick one thing, complete it once a day to light up a box. Close the distance between wanting and doing."
+
+msgid "與自己立下一個十四天的約定，拉近想與做之間的距離。"
+msgstr "Make a 14-day pact with yourself to shorten the distance between wanting and doing."
+
+msgid "走近看看 ➔"
+msgstr "Step Closer ➔"
+
+msgid "這條路上還沒有其他腳印，成為第一位啟程的人吧！"
+msgstr "No footprints on this road yet. Be the first to embark!"
+
+msgid "這段十四天旅途已經結束"
+msgstr "This 14-day journey has concluded"
+
+msgid "連續不中斷每日額外加成 (預設 5 點)"
+msgstr "Daily streak bonus without interruption (default 5 pts)"
+
+msgid "連續堅持紅利"
+msgstr "Streak Bonus"
+
+msgid "連續堅持紅利：+"
+msgstr "Streak Bonus: +"
+
+msgid "選一件事、每天打卡、14 天後看結果。想做與做之間，其實可以被拉近一些。"
+msgstr "Pick one thing, check in daily, see results in 14 days. The gap between wanting and doing can truly be closed."
+
+msgid "開始啟程"
+msgstr "Embark"
+
+msgid "預設 10 點"
+msgstr "Default: 10 pts"
+
+msgid "點亮今日約定"
+msgstr "Light Up Today's Pact"
+
+msgid "點亮今日約定 ➔"
+msgstr "Light Up Today's Pact ➔"
+
+msgid "點亮今日進度 ✓"
+msgstr "Light Up Today ✓"
+
+msgid "點亮節奏"
+msgstr "Pacing"
+
+msgid "🎯 我的約定旅程"
+msgstr "🎯 My Pact Journey"
+
+msgid "🏆 查看完整同行者名冊"
+msgstr "🏆 View Full Travelers List"
+
+msgid "📅 每日點亮"
+msgstr "📅 Daily Light-Up"
+
+msgid "📆 每週里程"
+msgstr "📆 Weekly Milestone"
+
+msgid "🔥 連續堅持天數"
+msgstr "🔥 Days of Persistence"
+
+msgid "🕯️ 我的約定狀態"
+msgstr "🕯️ My Pact Status"
+
+msgid "🤝 加入這份約定"
+msgstr "🤝 Join this Pact"
+
+msgid "「十四天，做完一個東西。每天完成一次，就點亮一格。想和做之間，其實可以被拉近一些。」"
+msgstr "\"Fourteen days, finish one thing. Complete it once a day to light up a box. The gap between wanting and doing can truly be closed.\""
+
+msgid "© 2026 A Little Wonder • 《04_Story.md》第一章 十四天"
+msgstr "© 2026 A Little Wonder • Chapter 01 Fourteen Days"
+
+msgid "「每天完成一次，就點亮一格。一開始沒有什麼特別的感覺，只是每天做一次，像在和自己約定。到了第七天，我開始覺得無聊了，也開始想放棄。可我還是打開它。那一格一格被點亮，讓我覺得自己沒有真的失敗。」"
+msgstr "\"Complete it once a day to light up a box. At first there was nothing special, just doing it once daily like a pact with myself. By day seven, I felt bored and wanted to give up. Yet I still opened it. Seeing box after box lit up made me feel I haven't truly failed.\""
+
+msgid "—— 《04_Story.md》第一章 • 十四天"
+msgstr "—— Chapter 01 • Fourteen Days"
+
+msgid "「我一直有很多想做的事情。但最後，大部分都只停在『想』。所以這一次，我給自己一個規則：十四天，做完一個東西。每天完成一次，就點亮一格。不是因為我有多堅持，只是因為那一格一格被點亮，讓我覺得自己沒有真的失敗。」"
+msgstr "\"I always had so many things I wanted to do. But in the end, most remained just thoughts. So this time, I gave myself a rule: Fourteen days, make one thing. Complete it once a day to light up a box. Not because I was so persistent, but because seeing each box lit up made me feel I haven't truly failed.\""
