@@ -4,7 +4,7 @@
 
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .auth_views import SignUpView, GoogleLoginView, GoogleCallbackView
+from .auth_views import SignUpView, GoogleLoginView, GoogleCallbackView, DevLoginView
 
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(
@@ -17,5 +17,7 @@ urlpatterns = [
     # Google OAuth 2.0 路由
     path('google/login/', GoogleLoginView.as_view(), name='google_login'),
     path('google/callback/', GoogleCallbackView.as_view(), name='google_callback'),
+    path('dev-login/', DevLoginView.as_view(), name='dev_login'),
 ]
+
 

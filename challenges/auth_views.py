@@ -24,7 +24,10 @@ class GoogleLoginView(View):
 
     def get(self, request):
         try:
-            auth_url = GoogleAuthService.get_auth_url()
+            redirect_uri = getattr(settings, 'GOOGLE_REDIRECT_URI', '')
+            if not redirect_uri:
+                redirect_uri = request.build_absolute_uri(reverse_lazy('google_callback'))
+            auth_url = GoogleAuthService.get_auth_url(redirect_uri=redirect_uri)
             return redirect(auth_url)
         except GoogleAuthError as e:
             messages.error(request, f"Google 登入暫時不可用：{str(e)}")
@@ -47,8 +50,12 @@ class GoogleCallbackView(View):
             return redirect('login')
 
         try:
+            redirect_uri = getattr(settings, 'GOOGLE_REDIRECT_URI', '')
+            if not redirect_uri:
+                redirect_uri = request.build_absolute_uri(reverse_lazy('google_callback'))
+
             # 1. 交換 Token
-            token_data = GoogleAuthService.exchange_code_for_token(code)
+            token_data = GoogleAuthService.exchange_code_for_token(code, redirect_uri=redirect_uri)
             access_token = token_data.get('access_token')
 
             if not access_token:
@@ -74,4 +81,22 @@ class GoogleCallbackView(View):
         except Exception as e:
             messages.error(request, "登入處理發生未預期錯誤，請稍後再試。")
             return redirect('login')
+
+
+class DevLoginView(View):
+    """
+    僅在 DEBUG=True 時供本機與測試用一鍵登入
+    """
+    def get(self, request):
+        if not settings.DEBUG:
+            return redirect('login')
+        from django.contrib.auth.models import User
+        user, _ = User.objects.get_or_create(
+            username='challenger',
+            defaults={'email': 'challenger@example.com', 'first_name': '挑戰探索者'}
+        )
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        messages.success(request, f"已使用開發者帳號登入：{user.first_name}")
+        return redirect('challenges:list')
+
 

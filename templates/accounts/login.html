@@ -21,7 +21,15 @@
         </svg>
         {% trans "使用 Google 帳號登入 / 註冊" %}
       </a>
+      {% if debug %}
+      <div style="margin-top: var(--space-sm);">
+        <a href="{% url 'dev_login' %}" style="font-size: 0.85rem; color: var(--color-teal); text-decoration: underline;">
+          🔑 {% trans "[開發測試] 一鍵以挑戰探索者帳號登入" %}
+        </a>
+      </div>
+      {% endif %}
     </div>
+
 
     <!-- 流程優勢說明 -->
     <div style="text-align: left; background: rgba(45, 122, 138, 0.06); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); border-left: 3px solid var(--color-teal);">

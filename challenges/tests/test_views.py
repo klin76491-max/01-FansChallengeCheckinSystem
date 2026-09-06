@@ -3,6 +3,7 @@
 """
 
 import json
+import urllib.parse
 from unittest.mock import patch
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
@@ -357,5 +358,40 @@ class ChallengeCreateAndGridTestCase(TestCase):
         data = response.json()
         self.assertTrue(data['success'])
         self.assertEqual(data['total_checkins'], 1)
+
+
+class SSOGatewayMiddlewareTestCase(TestCase):
+    """測試 Nginx 網關 SSO 自動免登入中間件"""
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_sso_auto_login_creates_and_authenticates_user(self):
+        """當帶有 HTTP_X_USER_EMAIL 標頭時，子專案自動登入並建立帳號"""
+        sso_email = 'ssouser@example.com'
+        sso_name = urllib.parse.quote('SSO 測試員')
+
+        response = self.client.get(
+            reverse('challenges:my_challenges'),
+            HTTP_X_USER_EMAIL=sso_email,
+            HTTP_X_USER_NAME=sso_name,
+        )
+        self.assertEqual(response.status_code, 200)
+        # 確認使用者已在資料庫中建立
+        user = User.objects.filter(email=sso_email).first()
+        self.assertIsNotNone(user)
+        self.assertEqual(user.first_name, 'SSO 測試員')
+        # 確認頁面 context 中為登入狀態
+        self.assertTrue(response.context['user'].is_authenticated)
+        self.assertEqual(response.context['user'].email, sso_email)
+
+    @override_settings(DEBUG=True)
+    def test_dev_login_works_in_debug_mode(self):
+        """測試本地開發一鍵登入功能"""
+        response = self.client.get(reverse('dev_login'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['user'].is_authenticated)
+        self.assertEqual(response.context['user'].username, 'challenger')
+
 
 

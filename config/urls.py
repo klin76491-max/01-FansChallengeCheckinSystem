@@ -11,7 +11,10 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('challenges/i18n/', include('django.conf.urls.i18n')),
     path('accounts/', include('challenges.auth_urls')),
+    path('challenges/accounts/', include('challenges.auth_urls')),
     path('challenges/', include('challenges.urls')),
     path('', lambda request: redirect('challenges:list')),
 ]
+
