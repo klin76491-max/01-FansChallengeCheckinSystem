@@ -29,7 +29,7 @@
         <a href="{% url 'challenges:create' %}" class="nav-link btn-nav-create" id="nav-create-challenge">{% trans "+ 建立挑戰" %}</a>
         <div class="nav-user">
           <span class="nav-username">{{ user.first_name|default:user.username }}</span>
-          <form action="{% url 'logout' %}" method="post" style="display:inline; margin:0;">
+           <form action="/challenges/accounts/logout/" method="post" style="display:inline; margin:0;">
             {% csrf_token %}
             <button type="submit" class="nav-link nav-logout" id="nav-logout">{% trans "登出" %}</button>
           </form>
