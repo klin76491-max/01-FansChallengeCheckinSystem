@@ -72,7 +72,7 @@
         {% endif %}
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+      <div class="form-row-2col">
         <!-- 挑戰類型 -->
         <div class="form-group">
           <label class="form-label" for="{{ form.challenge_type.id_for_label }}">
@@ -94,7 +94,7 @@
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+      <div class="form-row-2col">
         <!-- 開始時間 -->
         <div class="form-group">
           <label class="form-label" for="{{ form.start_at.id_for_label }}">
@@ -118,7 +118,7 @@
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+      <div class="form-row-2col">
         <!-- 每次打卡積分 -->
         <div class="form-group">
           <label class="form-label" for="{{ form.points_per_checkin.id_for_label }}">

@@ -7,8 +7,10 @@ URL configuration for 粉絲挑戰打卡系統 (Fans Challenge Check-in System).
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
+from django.http import HttpResponse
 
 urlpatterns = [
+    path('favicon.ico', lambda request: HttpResponse(status=204)),
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
     path('challenges/i18n/', include('django.conf.urls.i18n')),

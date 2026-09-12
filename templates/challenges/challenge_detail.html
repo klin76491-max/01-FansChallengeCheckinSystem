@@ -27,7 +27,7 @@
   <span class="story-epigraph-meta">{% trans "—— 《04_Story.md》第一章 • 十四天" %}</span>
 </div>
 
-<div class="detail-grid" style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-xl);">
+<div class="detail-grid">
   <!-- 左側：挑戰內容與 14 天燈火格子 -->
   <div class="detail-main">
     <!-- 挑戰說明卡片 -->
@@ -99,30 +99,32 @@
         <h2 class="font-serif" style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0;">{% trans "排行榜 TOP 5" %}</h2>
       </div>
       {% if top_participants %}
-      <table class="leaderboard-table" id="leaderboard-preview">
-        <thead>
-          <tr>
-            <th>{% trans "名次" %}</th>
-            <th>{% trans "暱稱" %}</th>
-            <th>{% trans "總分" %}</th>
-            <th>{% trans "連續天數" %}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for p in top_participants %}
-          <tr {% if user.is_authenticated and p.user.id == user.id %}class="rank-me"{% endif %}>
-            <td>
-              <span class="rank-number rank-{{ forloop.counter }}">
-                {% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% else %}{{ forloop.counter }}{% endif %}
-              </span>
-            </td>
-            <td><strong>{{ p.user.first_name|default:p.user.username }}</strong></td>
-            <td>{{ p.total_points }}</td>
-            <td>{{ p.current_streak }} {% trans "天" %}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="leaderboard-table" id="leaderboard-preview">
+          <thead>
+            <tr>
+              <th>{% trans "名次" %}</th>
+              <th>{% trans "暱稱" %}</th>
+              <th>{% trans "總分" %}</th>
+              <th>{% trans "連續天數" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in top_participants %}
+            <tr {% if user.is_authenticated and p.user.id == user.id %}class="rank-me"{% endif %}>
+              <td>
+                <span class="rank-number rank-{{ forloop.counter }}">
+                  {% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% else %}{{ forloop.counter }}{% endif %}
+                </span>
+              </td>
+              <td><strong>{{ p.user.first_name|default:p.user.username }}</strong></td>
+              <td>{{ p.total_points }}</td>
+              <td>{{ p.current_streak }} {% trans "天" %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
       <div style="text-align: center; margin-top: var(--space-lg);">
         <a href="{% url 'challenges:leaderboard' challenge.pk %}" class="btn btn-outline" id="view-leaderboard">{% trans "🏆 查看完整同行者名冊" %}</a>
       </div>

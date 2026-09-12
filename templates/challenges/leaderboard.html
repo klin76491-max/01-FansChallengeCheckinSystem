@@ -29,7 +29,8 @@
 
 {% if leaderboard %}
 <div class="card" style="padding: 0; overflow: hidden;">
-  <table class="leaderboard-table" id="leaderboard-full">
+  <div class="table-responsive">
+    <table class="leaderboard-table" id="leaderboard-full">
     <thead>
       <tr>
         <th style="width: 80px;">{% trans "序位" %}</th>
@@ -52,7 +53,8 @@
       </tr>
       {% endfor %}
     </tbody>
-  </table>
+    </table>
+  </div>
 </div>
 {% else %}
 <div class="card text-center" style="padding: var(--space-2xl); text-align: center;">

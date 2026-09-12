@@ -19,7 +19,13 @@ function getCookie(name) {
   return cookieValue;
 }
 
-const csrftoken = getCookie('csrftoken');
+function getCsrfToken() {
+  const meta = document.querySelector('meta[name="csrf-token"]');
+  if (meta && meta.content) return meta.content;
+  const input = document.querySelector('[name=csrfmiddlewaretoken]');
+  if (input && input.value) return input.value;
+  return getCookie('csrftoken') || '';
+}
 
 function isEnglish() {
   const lang = (document.documentElement.lang || '').toLowerCase();
@@ -223,7 +229,7 @@ async function joinChallenge(challengeId, buttonEl) {
     const response = await fetch(`/challenges/api/${challengeId}/join/`, {
       method: 'POST',
       headers: {
-        'X-CSRFToken': csrftoken,
+        'X-CSRFToken': getCsrfToken(),
         'Content-Type': 'application/json',
       },
     });
@@ -294,7 +300,7 @@ async function checkIn(challengeId, buttonEl) {
     const response = await fetch(`/challenges/api/${challengeId}/checkin/`, {
       method: 'POST',
       headers: {
-        'X-CSRFToken': csrftoken,
+        'X-CSRFToken': getCsrfToken(),
         'Content-Type': 'application/json',
       },
     });
