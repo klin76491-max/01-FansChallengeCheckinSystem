@@ -82,16 +82,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database - SQLite for MVP
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# 資料儲存目錄 (支援透過 DATA_DIR 環境變數指定持久化掛載路徑，如 Docker 映射之目錄)
+# 資料庫設定 (支援 PostgreSQL 與 SQLite Fallback)
 DATA_DIR = Path(os.getenv('DATA_DIR', BASE_DIR))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DATA_DIR / 'db.sqlite3',
+DB_ENGINE = os.getenv('DB_ENGINE', '').lower()
+USE_SQLITE = os.getenv('USE_SQLITE', 'False').lower() in ('true', '1', 'yes')
+
+if not USE_SQLITE and (DB_ENGINE == 'postgresql' or os.getenv('DB_HOST')):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'alw_challenges'),
+            'USER': os.getenv('DB_USER', 'challenges_user'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'challenges_pass_secure_2026'),
+            'HOST': os.getenv('DB_HOST', 'host.docker.internal'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'CONN_MAX_AGE': int(os.getenv('DB_CONN_MAX_AGE', '60')),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DATA_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
